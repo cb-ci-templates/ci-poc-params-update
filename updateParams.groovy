@@ -1,10 +1,10 @@
-//def mystring = "['one','two']"
+//def mystring = "'one','two'"
 def myparam="$params"
 // Remove square brackets and whitespace
-def listString = myparam.replaceAll(/\[|\]|\s+/, '')
+//myparam = myparam.replaceAll(/\[|\]|\s+/, '')
 
 // Split the string by comma
-def elements = listString.split(',')
+ArrayList elements = myparam.split(',')
 println elements
 // Create ArrayList and add elements
 def arrayList = new ArrayList(elements)
