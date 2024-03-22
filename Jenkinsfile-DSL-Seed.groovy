@@ -30,11 +30,6 @@ pipeline {
         stage('SeedDSL') {
             steps {
                 container("shell") {
-  /*                  script {
-                        branches=sh(script: "./script-curl-branches.sh $GH_ACCESS_TOKEN  $REPO_BRANCH  |jq -r '.[] | .name' | tr '\\n' ', ' | sed 's/,\$//'", returnStdout: true)
-                        echo "BRANCHES: ${branches}"
-                    }*/
-                    //echo sh(script: 'env|sort', returnStdout: true)
                     jobDsl targets: ['updateParams.groovy'].join('\n'),
                             removedJobAction: 'DELETE',
                             removedViewAction: 'DELETE',
