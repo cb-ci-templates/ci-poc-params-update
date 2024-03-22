@@ -5,7 +5,7 @@ def listString = myparam.replaceAll(/\[|\]|\s+/, '')
 
 // Split the string by comma
 def elements = listString.split(',')
-
+println elements
 // Create ArrayList and add elements
 def arrayList = new ArrayList(elements)
 
