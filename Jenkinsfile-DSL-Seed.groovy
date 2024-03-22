@@ -19,9 +19,7 @@ pipeline {
     }
     stages {
         stage('SeedDSL') {
-            environment {
 
-            }
             steps {
                 //  withCredentials([string(credentialsId: 'githubaccesstoken', variable: 'GH_ACCESS_TOKEN')]) {
 
