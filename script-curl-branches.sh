@@ -3,7 +3,8 @@
 
 GH_ACCESS_TOKEN=${1:-YOUR_GITHUB_TOKEN}
 REPO_BRANCH=${2:-"https://api.github.com/repos/org-caternberg/dsl-params-update/branches"}
-
+env | sort
+apk list
 RESULT=$(curl -L \
  -H "Accept: application/vnd.github+json" \
  -H "Authorization: Bearer ${GH_ACCESS_TOKEN}" \
