@@ -17,31 +17,32 @@ pipeline {
             defaultContainer 'shell'
         }
     }
+    environment {
+        GH_ACCESS_TOKEN = credentials("github-token")
+    }
     stages {
         stage('SeedDSL') {
 
             steps {
-                withCredentials([string(credentialsId: 'github-token', variable: 'GH_ACCESS_TOKEN')]) {
-                   echo "$GH_ACCESS_TOKEN"
-                    sh """
+                echo "$GH_ACCESS_TOKEN"
+                sh """
                            curl -Lv \
                           -H 'Accept: application/vnd.github+json' \
                           -H 'Authorization: Bearer ${GH_ACCESS_TOKEN}' \
                           -H 'X-GitHub-Api-Version: 2022-11-28' \
                           https://api.github.com/repos/pipeline-demo-caternberg/pipeline-helloworld/branches
                      """
-                   /* script {
-                         def branches = sh(script: """
-                                    curl -L \
-                                      -H "Accept: application/vnd.github+json" \
-                                      -H "Authorization: Bearer ${GH_ACCESS_TOKEN}" \
-                                      -H "X-GitHub-Api-Version: 2022-11-28" \
-                                      https://api.github.com/repos/pipeline-demo-caternberg/pipeline-helloworld/branches
-                                """, returnStatus: true)
-                        println branches
-                    }
-                    */
-                }
+                /* script {
+                      def branches = sh(script: """
+                                 curl -L \
+                                   -H "Accept: application/vnd.github+json" \
+                                   -H "Authorization: Bearer ${GH_ACCESS_TOKEN}" \
+                                   -H "X-GitHub-Api-Version: 2022-11-28" \
+                                   https://api.github.com/repos/pipeline-demo-caternberg/pipeline-helloworld/branches
+                             """, returnStatus: true)
+                     println branches
+                 }
+                 */
                 //echo sh(script: 'env|sort', returnStdout: true)
                 jobDsl targets: ['updateParams.groovy'].join('\n'),
                         removedJobAction: 'DELETE',
