@@ -25,8 +25,8 @@ pipeline {
     }
     stages {
         stage('SeedDSL') {
-            container("shell") {
-                steps {
+            steps {
+                container("shell") {
                     script {
                         def branches = sh(script: "./script-curl-branches.sh $GH_ACCESS_TOKEN  $REPO_BRANCH", returnStatus: true)
                         println branches
