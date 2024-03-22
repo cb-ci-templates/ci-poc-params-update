@@ -26,7 +26,7 @@ pipeline {
 
             steps {
                 echo "$GH_ACCESS_TOKEN"
-                sh "curl -Lv -H 'Accept: application/vnd.github+json' -H 'Authorization: Bearer ${GH_ACCESS_TOKEN}'  -H 'X-GitHub-Api-Version: 2022-11-28'  $REPO_BRANCH "
+                echo  "curl -Lv -H 'Accept: application/vnd.github+json' -H 'Authorization: Bearer ${GH_ACCESS_TOKEN}'  -H 'X-GitHub-Api-Version: 2022-11-28'  $REPO_BRANCH"
                 /* script {
                       def branches = sh(script: """
                                  curl -L \
