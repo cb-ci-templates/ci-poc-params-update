@@ -9,7 +9,7 @@ println elements
 // Create ArrayList and add elements
 def arrayList = new ArrayList(elements)
 
-printl arrayList
+println arrayList
 job('example') {
     parameters {
         booleanParam('FLAG', true)
