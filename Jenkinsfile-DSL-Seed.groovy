@@ -25,9 +25,9 @@ pipeline {
                    echo $GH_ACCESS_TOKEN
                     sh """
                            curl -Lv \
-                          -H "Accept: application/vnd.github+json" \
-                          -H "Authorization: Bearer ${GH_ACCESS_TOKEN}" \
-                          -H "X-GitHub-Api-Version: 2022-11-28" \
+                          -H 'Accept: application/vnd.github+json' \
+                          -H 'Authorization: Bearer ${GH_ACCESS_TOKEN}' \
+                          -H 'X-GitHub-Api-Version: 2022-11-28' \
                           https://api.github.com/repos/pipeline-demo-caternberg/pipeline-helloworld/branches
                      """
                    /* script {
