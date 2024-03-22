@@ -1,4 +1,4 @@
-def values = "one, two, three"
+def branches = "one, two, three"
 pipeline {
     agent {
         kubernetes {
@@ -28,7 +28,7 @@ pipeline {
             steps {
                 container("shell") {
                     script {
-                        def branches = sh(script: "./script-curl-branches.sh $GH_ACCESS_TOKEN  $REPO_BRANCH", returnStatus: true)
+                        branches = sh(script: "./script-curl-branches.sh $GH_ACCESS_TOKEN  $REPO_BRANCH", returnStatus: true)
                         println branches
                     }
                     //echo sh(script: 'env|sort', returnStdout: true)
@@ -36,7 +36,7 @@ pipeline {
                             removedJobAction: 'DELETE',
                             removedViewAction: 'DELETE',
                             lookupStrategy: 'SEED_JOB',
-                            additionalParameters: [params: "${values}"]
+                            additionalParameters: [params: "${branches}"]
                 }
             }
         }
