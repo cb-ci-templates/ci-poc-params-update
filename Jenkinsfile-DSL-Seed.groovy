@@ -28,15 +28,15 @@ pipeline {
             steps {
                 container("shell") {
                     script {
-                        branches=sh(script: "./script-curl-branches.sh $GH_ACCESS_TOKEN  $REPO_BRANCH  |jq  '.[] | .name' | tr '\\n' ', ' | sed 's/,\$//'", returnStatus: true)
-                        println "BRANCHES: ${branches}"
+                        def mybranches=sh(script: "./script-curl-branches.sh $GH_ACCESS_TOKEN  $REPO_BRANCH  |jq  '.[] | .name' | tr '\\n' ', ' | sed 's/,\$//'", returnStatus: true)
+                        echo "BRANCHES: ${mybranches}"
                     }
                     //echo sh(script: 'env|sort', returnStdout: true)
                     jobDsl targets: ['updateParams.groovy'].join('\n'),
                             removedJobAction: 'DELETE',
                             removedViewAction: 'DELETE',
                             lookupStrategy: 'SEED_JOB',
-                            additionalParameters: [params: "${branches}"]
+                            additionalParameters: [params: "${mybranches}"]
                 }
             }
         }
