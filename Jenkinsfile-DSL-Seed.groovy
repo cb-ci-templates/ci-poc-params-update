@@ -28,7 +28,7 @@ pipeline {
             steps {
                 container("shell") {
                     script {
-                        def mybranches=sh(script: "./script-curl-branches.sh $GH_ACCESS_TOKEN  $REPO_BRANCH  |jq  '.[] | .name' | tr '\\n' ', ' | sed 's/,\$//'", returnStatus: true)
+                        def mybranches=sh(script: "./script-curl-branches.sh $GH_ACCESS_TOKEN  $REPO_BRANCH  |jq  '.[] | .name' | tr '\\n' ', ' | sed 's/,\$//'", returnStdout: true)
                         echo "BRANCHES: ${mybranches}"
                     }
                     //echo sh(script: 'env|sort', returnStdout: true)
