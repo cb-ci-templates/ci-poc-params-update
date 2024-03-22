@@ -21,19 +21,22 @@ pipeline {
         stage('SeedDSL') {
 
             steps {
-                //  withCredentials([string(credentialsId: 'githubaccesstoken', variable: 'GH_ACCESS_TOKEN')]) {
+                withCredentials([string(credentialsId: 'github-token', variable: 'GH_ACCESS_TOKEN')]) {
+                    script {
+                         def branches = sh(script: """
+                                    curl -L \
+                                      -H "Accept: application/vnd.github+json" \
+                                      -H "Authorization: Bearer ${GH_ACCESS_TOKEN}" \
+                                      -H "X-GitHub-Api-Version: 2022-11-28" \
+                                      https://api.github.com/repos/pipeline-demo-caternberg/pipeline-helloworld/branches
+                                """, returnStatus: true)
+                        println branches
+                    }
 
-                /*
-                sh """
-                        curl -L \
-                          -H "Accept: application/vnd.github+json" \
-                          -H "Authorization: Bearer ${GH_ACCESS_TOKEN}" \
-                          -H "X-GitHub-Api-Version: 2022-11-28" \
-                          https://api.github.com/repos/pipeline-demo-caternberg/pipeline-helloworld/branches
-                    """
 
-                 */
-                echo sh(script: 'env|sort', returnStdout: true)
+                }
+
+                //echo sh(script: 'env|sort', returnStdout: true)
                 jobDsl targets: ['updateParams.groovy'].join('\n'),
                         removedJobAction: 'DELETE',
                         removedViewAction: 'DELETE',
