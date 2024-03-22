@@ -1,7 +1,7 @@
 library identifier: 'ci-shared-library@main', retriever: modernSCM(
         [$class: 'GitSCMSource',
          remote: 'https://github.com/cb-ci-templates/ci-shared-library.git'])
-def branches = "one, two, three"
+//def branches = "one, two, three"
 pipeline {
     agent {
         kubernetes {
