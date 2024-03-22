@@ -22,7 +22,7 @@ pipeline {
 
             steps {
                 withCredentials([string(credentialsId: 'github-token', variable: 'GH_ACCESS_TOKEN')]) {
-                   echo $GH_ACCESS_TOKEN
+                   echo "$GH_ACCESS_TOKEN"
                     sh """
                            curl -Lv \
                           -H 'Accept: application/vnd.github+json' \
