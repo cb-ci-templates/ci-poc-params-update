@@ -1,3 +1,6 @@
+library identifier: 'ci-shared-library@main', retriever: modernSCM(
+        [$class: 'GitSCMSource',
+         remote: 'https://github.com/cb-ci-templates/ci-shared-library.git'])
 def branches = "one, two, three"
 pipeline {
     agent {
@@ -27,16 +30,16 @@ pipeline {
         stage('SeedDSL') {
             steps {
                 container("shell") {
-                    script {
+  /*                  script {
                         branches=sh(script: "./script-curl-branches.sh $GH_ACCESS_TOKEN  $REPO_BRANCH  |jq -r '.[] | .name' | tr '\\n' ', ' | sed 's/,\$//'", returnStdout: true)
                         echo "BRANCHES: ${branches}"
-                    }
+                    }*/
                     //echo sh(script: 'env|sort', returnStdout: true)
                     jobDsl targets: ['updateParams.groovy'].join('\n'),
                             removedJobAction: 'DELETE',
                             removedViewAction: 'DELETE',
                             lookupStrategy: 'SEED_JOB',
-                            additionalParameters: [params: "${branches}"]
+                            additionalParameters: [params: getGitBranches("$GH_ACCESS_TOKEN","$REPO_BRANCH") ]
                 }
             }
         }
