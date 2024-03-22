@@ -8,7 +8,7 @@ pipeline {
                 spec:
                   containers:
                   - name: shell
-                    image: caternberg/jenkins-agent-customized:latest
+                    image: softonic/curl-jq:3.18.2-1
                     command:
                       - cat
                     tty: true
