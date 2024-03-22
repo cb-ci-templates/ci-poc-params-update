@@ -23,9 +23,7 @@ pipeline {
     }
     stages {
         stage('SeedDSL') {
-
             steps {
-                echo "$GH_ACCESS_TOKEN"
                 echo  "curl -Lv -H 'Accept: application/vnd.github+json' -H 'Authorization: Bearer ${GH_ACCESS_TOKEN}'  -H 'X-GitHub-Api-Version: 2022-11-28'  $REPO_BRANCH"
                 /* script {
                       def branches = sh(script: """
@@ -33,7 +31,7 @@ pipeline {
                                    -H "Accept: application/vnd.github+json" \
                                    -H "Authorization: Bearer ${GH_ACCESS_TOKEN}" \
                                    -H "X-GitHub-Api-Version: 2022-11-28" \
-                                   https://api.github.com/repos/pipeline-demo-caternberg/pipeline-helloworld/branches
+                                   $REPO_BRANCH
                              """, returnStatus: true)
                      println branches
                  }
