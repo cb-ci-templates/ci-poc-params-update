@@ -1,4 +1,4 @@
-def values = ["one", "two", "three"]
+def values = ["1", "two", "three"]
 pipeline {
     agent {
         kubernetes {
