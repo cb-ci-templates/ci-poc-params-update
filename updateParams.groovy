@@ -1,4 +1,4 @@
-def arrayList = new ArrayList($params)
+def arrayList = new ArrayList("$params")
 printl arrayList
 job('example') {
     parameters {
