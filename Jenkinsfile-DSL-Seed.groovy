@@ -8,7 +8,7 @@ pipeline {
                 spec:
                   containers:
                   - name: shell
-                    image: gradle:alpine
+                    image: curlimages/curl:latest
                     command:
                     - sleep
                     args:
@@ -32,10 +32,7 @@ pipeline {
                                 """, returnStatus: true)
                         println branches
                     }
-
-
                 }
-
                 //echo sh(script: 'env|sort', returnStdout: true)
                 jobDsl targets: ['updateParams.groovy'].join('\n'),
                         removedJobAction: 'DELETE',
@@ -43,7 +40,6 @@ pipeline {
                         lookupStrategy: 'SEED_JOB',
                         additionalParameters: [params: "${values}"]
             }
-
         }
     }
 }
