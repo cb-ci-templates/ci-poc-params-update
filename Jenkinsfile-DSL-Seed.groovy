@@ -8,7 +8,7 @@ pipeline {
                 spec:
                   containers:
                   - name: shell
-                    image: curlimages/curl:latest
+                    image: ubuntu
                     command:
                     - sleep
                     args:
