@@ -9,4 +9,4 @@ RESULT=$(curl -s -L \
  -H "X-GitHub-Api-Version: 2022-11-28" \
  $REPO_BRANCH)
 #echo $RESULT |jq -r '.[] | .name'
-echo $RESULT  |jq -r '.[] | .name' | tr '\n' ', ' | sed 's/,$//'
+echo $RESULT
