@@ -19,20 +19,14 @@ pipeline {
     }
     environment {
         GH_ACCESS_TOKEN = credentials("github-token")
-        REPO_BRANCH = "https://api.github.com/repos/pipeline-demo-caternberg/pipeline-helloworld/branches"
+        REPO_BRANCH = "https://api.github.com/repos/org-caternberg/dsl-params-update/branches"
     }
     stages {
         stage('SeedDSL') {
             steps {
-                echo  "curl -Lv -H \"Accept: application/vnd.github+json\" -H \"Authorization: Bearer ${GH_ACCESS_TOKEN}\"  -H \"X-GitHub-Api-Version: 2022-11-28\"  $REPO_BRANCH"
+                sh  "curl -Lv -H \"Accept: application/vnd.github+json\" -H \"Authorization: Bearer ${GH_ACCESS_TOKEN}\"  -H \"X-GitHub-Api-Version: 2022-11-28\"  $REPO_BRANCH"
                 script {
-                      def branches = sh(script: """
-                                 curl -L \
-                                   -H "Accept: application/vnd.github+json" \
-                                   -H "Authorization: Bearer ${GH_ACCESS_TOKEN}" \
-                                   -H "X-GitHub-Api-Version: 2022-11-28" \
-                                   $REPO_BRANCH
-                             """, returnStatus: true)
+                     def branches = sh(script: "script-curl-branches.sh $GH_ACCESS_TOKEN  $REPO_BRANCH", returnStatus: true)
                      println branches
                  }
 
