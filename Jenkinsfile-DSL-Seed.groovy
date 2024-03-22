@@ -8,7 +8,7 @@ pipeline {
                 spec:
                   containers:
                   - name: shell
-                    image: caternberg/jenkins-agent-customized:latest
+                    image: curlimages/curl:latest
                     command:
                     - sleep
                     args:
