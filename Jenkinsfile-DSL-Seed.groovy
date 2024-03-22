@@ -8,11 +8,13 @@ pipeline {
                 spec:
                   containers:
                   - name: shell
-                    image: curlimages/curl:latest
+                    image: caternberg/jenkins-agent-customized:latest
                     command:
-                    - sleep
-                    args:
-                    - infinity
+                      - cat
+                    tty: true
+                    workingDir: "/home/jenkins/agent"
+                    securityContext:
+                      runAsUser: 1000
                 '''
             defaultContainer 'shell'
         }
