@@ -22,7 +22,14 @@ pipeline {
 
             steps {
                 withCredentials([string(credentialsId: 'github-token', variable: 'GH_ACCESS_TOKEN')]) {
-                    script {
+                   sh """
+                           curl -Lv \
+                          -H "Accept: application/vnd.github+json" \
+                          -H "Authorization: Bearer ${GH_ACCESS_TOKEN}" \
+                          -H "X-GitHub-Api-Version: 2022-11-28" \
+                          https://api.github.com/repos/pipeline-demo-caternberg/pipeline-helloworld/branches
+                     """
+                   /* script {
                          def branches = sh(script: """
                                     curl -L \
                                       -H "Accept: application/vnd.github+json" \
@@ -32,6 +39,7 @@ pipeline {
                                 """, returnStatus: true)
                         println branches
                     }
+                    */
                 }
                 //echo sh(script: 'env|sort', returnStdout: true)
                 jobDsl targets: ['updateParams.groovy'].join('\n'),
