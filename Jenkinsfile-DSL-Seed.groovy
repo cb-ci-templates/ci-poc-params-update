@@ -38,7 +38,7 @@ pipeline {
                         removedJobAction: 'DELETE',
                         removedViewAction: 'DELETE',
                         lookupStrategy: 'SEED_JOB',
-                        additionalParameters: [params: "${values}"]
+                        additionalParameters: [params: ${values}]
             }
 
         }
