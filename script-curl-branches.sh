@@ -10,3 +10,4 @@ RESULT=$(curl -s -L \
  $REPO_BRANCH)
 #echo $RESULT |jq -r '.[] | .name'
 echo $RESULT
+return $RESULT
