@@ -1,4 +1,14 @@
-def arrayList = new ArrayList("$params")
+//def mystring = "['one','two']"
+def myparam="$params"
+// Remove square brackets and whitespace
+def listString = myparam.replaceAll(/\[|\]|\s+/, '')
+
+// Split the string by comma
+def elements = listString.split(',')
+
+// Create ArrayList and add elements
+def arrayList = new ArrayList(elements)
+
 printl arrayList
 job('example') {
     parameters {
