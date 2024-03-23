@@ -11,7 +11,7 @@ pipeline {
                 spec:
                   containers:
                   - name: shell
-                    image: softonic/curl-jq:3.18.2-1
+                    image: mikefarah/yq:latest
                     command:
                       - cat
                     tty: true
