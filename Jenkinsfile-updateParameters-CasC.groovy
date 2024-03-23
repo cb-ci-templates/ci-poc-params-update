@@ -11,7 +11,7 @@ pipeline {
                 spec:
                   containers:
                   - name: shell
-                    image: mikefarah/yq:latest
+                    image: linuxserver/yq
                     command:
                       - cat
                     tty: true
