@@ -11,19 +11,20 @@ export PARAM_CHOICE_VALUES=${2:-'["new", "mew1"]'}
 function updateJob(){
   echo "------------------  CREATE/UPDATE JOBS $1 | $JENKINS_TOKEN------------------"
   echo "$1"
-  curl -L -XPOST \
+  curl -Lv -XPOST \
      --user $JENKINS_TOKEN \
      "${CONTROLLER_URL}/casc-items/create-items" \
       -H "Content-Type:text/yaml" \
      --data-binary @$1
 }
 
-#yq  '.items[0].properties[0].parameters.parameterDefinitions[0].choice.choices = ["dev","test"]' tmp-casc-pipelinejob.yaml
-yq -i '.items[0].properties[0].parameters.parameterDefinitions[0].choice.choices = env(PARAM_CHOICE_VALUES)' ./casc-pipelinejob.yaml
-yq -i '.items[0].parameters[0].choice.choices = env(PARAM_CHOICE_VALUES)' ./casc-freestylejob.yaml
-cat ./casc-freestylejob.yaml
-cat ./casc-pipelinejob.yaml
-updateJob ./casc-freestylejob.yaml
-updateJob ./casc-pipelinejob.yaml
+yq  '.items[0].properties[0].parameters.parameterDefinitions[0].choice.choices = env(PARAM_CHOICE_VALUES)' ./casc-pipelinejob.yaml > ./updated-casc-pipelinejob.yaml
+diff -c ./casc-pipelinejob.yaml ./updated-casc-pipelinejob.yaml
+updateJob updated-casc-pipelinejob.yaml
+
+#yq -i '.items[0].parameters[0].choice.choices = env(PARAM_CHOICE_VALUES)' ./casc-freestylejob.yaml > ./updated-casc-freestylejob.yaml
+#cat ./casc-freestylejob.yaml
+#updateJob ./casc-freestylejob.yaml
+
 
 
