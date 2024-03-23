@@ -24,7 +24,6 @@ pipeline {
     }
     environment {
         GH_ACCESS_TOKEN = credentials("github-token")
-        JENKINS_TOKEN = credentials("jenkins-token")
         REPO_BRANCH = "https://api.github.com/repos/org-caternberg/dsl-params-update/branches"
         //GIT_REMOTE_BRANCHES = "one, two, three" // For testing purpose
     }
@@ -32,10 +31,12 @@ pipeline {
         stage('SeedDSL') {
             steps {
                 container("shell") {
-                    dir ("resources"){
-                        //Shared Lib collects al remote branches and exposes to env.GIT_REPO_BRANCHES}
-                        getGitBranches("$GH_ACCESS_TOKEN","$REPO_BRANCH")
-                        sh "script:casc-updateJobParams.sh ${JENKINS_TOKEN} ${env.GIT_REPO_BRANCHES}"
+                    withCredentials([usernameColonPassword(credentialsId: 'jenkins-token', variable: 'JENKINS_TOKEN')]) {
+                        dir ("resources"){
+                            //Shared Lib collects al remote branches and exposes to env.GIT_REPO_BRANCHES}
+                            getGitBranches("$GH_ACCESS_TOKEN","$REPO_BRANCH")
+                            sh "script:casc-updateJobParams.sh ${JENKINS_TOKEN} ${env.GIT_REPO_BRANCHES}"
+                        }
                     }
                 }
             }
