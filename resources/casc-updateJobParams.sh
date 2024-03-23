@@ -9,9 +9,9 @@ export JENKINS_TOKEN=${1:-"user:token"}
 export PARAM_CHOICE_VALUES=${2:-'["value1", "value2"]'}
 
 function updateJob(){
-  echo "------------------  CREATE/UPDATE JOBS------------------"
+  echo "------------------  CREATE/UPDATE JOBS $1 | $JENKINS_TOKEN------------------"
   echo "$1"
-  curl -v -XPOST \
+  curl -L -XPOST \
      --user $JENKINS_TOKEN \
      "${CONTROLLER_URL}/casc-items/create-items" \
       -H "Content-Type:text/yaml" \
