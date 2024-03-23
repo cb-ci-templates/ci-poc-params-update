@@ -36,7 +36,7 @@ pipeline {
                             //Shared Lib collects al remote branches and exposes to env.GIT_REPO_BRANCHES}
                             getGitBranches("$GH_ACCESS_TOKEN","$REPO_BRANCH")
                             echo "BRANCHES BFORE SCRIPT: ${env.GIT_REPO_BRANCHES}"
-                            sh (script:"./casc-updateJobParams.sh ${JENKINS_TOKEN} ${env.GIT_REPO_BRANCHES}",returnStatus:true)
+                            sh (script:"./casc-updateJobParams.sh ${JENKINS_TOKEN} [${env.GIT_REPO_BRANCHES}]",returnStatus:true)
                         }
                     }
                 }
