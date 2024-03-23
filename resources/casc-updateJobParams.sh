@@ -6,7 +6,7 @@ echo "Usage: $0: JENKINS_TOKEN CHOICE_VALUES"
 echo "Call: $0 $@"
 export CONTROLLER_URL=${JENKINS_URL}
 export JENKINS_TOKEN=${1:-"user:token"}
-export PARAM_CHOICE_VALUES=${2:-'["new", "mew1"]'}
+export PARAM_CHOICE_VALUES=${2:-'["new1", "mew2"]'}
 
 function updateJob(){
   echo "------------------  CREATE/UPDATE JOBS $1 | $JENKINS_TOKEN------------------"
@@ -18,9 +18,10 @@ function updateJob(){
      --data-binary @$1
 }
 
-yq  '.items[0].properties[0].parameters.parameterDefinitions[0].choice.choices = env(PARAM_CHOICE_VALUES)' ./casc-pipelinejob.yaml > ./updated-casc-pipelinejob.yaml
+YQ=".items[0].properties[0].parameters.parameterDefinitions[0].choice.choices = $PARAM_CHOICE_VALUES"
+yq  "$YQ" ./casc-pipelinejob.yaml > ./updated-casc-pipelinejob.yaml
 diff -c ./casc-pipelinejob.yaml ./updated-casc-pipelinejob.yaml
-updateJob updated-casc-pipelinejob.yaml
+#updateJob updated-casc-pipelinejob.yaml
 
 #yq -i '.items[0].parameters[0].choice.choices = env(PARAM_CHOICE_VALUES)' ./casc-freestylejob.yaml > ./updated-casc-freestylejob.yaml
 #cat ./casc-freestylejob.yaml
