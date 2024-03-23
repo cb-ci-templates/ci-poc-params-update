@@ -19,8 +19,8 @@ function updateJob(){
 }
 
 #yq  '.items[0].properties[0].parameters.parameterDefinitions[0].choice.choices = ["dev","test"]' tmp-casc-pipelinejob.yaml
-yq -y -i ".items[0].properties[0].parameters.parameterDefinitions[0].choice.choices = ${PARAM_CHOICE_VALUES}" ./casc-pipelinejob.yaml
-yq -y -i ".items[0].parameters[0].choice.choices = ${PARAM_CHOICE_VALUES}" ./casc-freestylejob.yaml
+yq -i ".items[0].properties[0].parameters.parameterDefinitions[0].choice.choices = ${PARAM_CHOICE_VALUES}" ./casc-pipelinejob.yaml
+yq -i ".items[0].parameters[0].choice.choices = ${PARAM_CHOICE_VALUES}" ./casc-freestylejob.yaml
 cat ./casc-freestylejob.yaml
 cat ./casc-pipelinejob.yaml
 updateJob ./casc-freestylejob.yaml
