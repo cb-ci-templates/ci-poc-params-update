@@ -1,23 +1,30 @@
-kind: freeStyle
-name: example-dsl-freestylejob
-blockBuildWhenDownstreamBuilding: false
-blockBuildWhenUpstreamBuilding: false
-builders:
-  - shell:
-      command: 'echo OPTION SELECTED: ^${OPTION}'
-concurrentBuild: false
+kind: pipeline
+name: example-dsl-pipelinejob
+concurrentBuild: true
+definition:
+  cpsFlowDefinition:
+    sandbox: false
+    #//Jenkinsfile should better be in SCM but for demo purpose we make it here inline
+    script: |-
+      pipeline {
+          agent none
+          stages {
+              stage('selectedOption') {
+                  steps {
+                      echo "OPTION SELECTED: ^${OPTION}"
+                  }
+              }
+          }
+      }
 description: ''
 disabled: false
-displayName: example-dsl-freestylejob
-parameters:
-  - choice:
-      name: OPTION
-      choices:
-        - dev
-        - main
-scm:
-  none: {
-  }
-scmCheckoutStrategy:
-  standard: {
-  }
+displayName: example-dsl-pipelinejob
+properties:
+  - parameters:
+      parameterDefinitions:
+        - choice:
+            name: OPTION
+            choices:
+              - dev
+              - main
+resumeBlocked: false
