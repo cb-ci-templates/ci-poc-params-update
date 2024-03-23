@@ -9,7 +9,7 @@ job('example-dsl-freestylejob') {
         choiceParam('OPTION',arrayList)
     }
     steps {
-        shell("echo OPTION SELECTED: ${OPTION}")
+        shell('echo OPTION SELECTED: ${OPTION}')
     }
 }
 
