@@ -19,6 +19,7 @@ function updateJob(){
 }
 
 YQ=".items[0].properties[0].parameters.parameterDefinitions[0].choice.choices = $PARAM_CHOICE_VALUES"
+echo "YQ QUERY: $YQ"
 yq  "$YQ" ./casc-pipelinejob.yaml > ./updated-casc-pipelinejob.yaml
 diff -c ./casc-pipelinejob.yaml ./updated-casc-pipelinejob.yaml
 #updateJob updated-casc-pipelinejob.yaml
