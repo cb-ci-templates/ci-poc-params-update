@@ -11,7 +11,7 @@ pipeline {
                 spec:
                   containers:
                   - name: shell
-                    image: linuxserver/yq
+                    image: caternberg/jenkins-agent-customized:latest
                     command:
                       - cat
                     tty: true
