@@ -30,7 +30,7 @@ pipeline {
         stage('SeedDSL') {
             steps {
                 container("shell") {
-                    jobDsl targets: ['updateParams.groovy'].join('\n'),
+                    jobDsl targets: ['resources/updateParams.groovy'].join('\n'),
                             removedJobAction: 'DELETE',
                             removedViewAction: 'DELETE',
                             lookupStrategy: 'SEED_JOB',

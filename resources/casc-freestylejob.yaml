@@ -1,0 +1,23 @@
+kind: freeStyle
+name: example-dsl-freestylejob
+blockBuildWhenDownstreamBuilding: false
+blockBuildWhenUpstreamBuilding: false
+builders:
+  - shell:
+      command: 'echo OPTION SELECTED: ^${OPTION}'
+concurrentBuild: false
+description: ''
+disabled: false
+displayName: example-dsl-freestylejob
+parameters:
+  - choice:
+      name: OPTION
+      choices:
+        - dev
+        - main
+scm:
+  none: {
+  }
+scmCheckoutStrategy:
+  standard: {
+  }
