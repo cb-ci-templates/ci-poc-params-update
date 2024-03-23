@@ -23,7 +23,7 @@ yq  -i ".items[0].properties[0].parameters.parameterDefinitions[0].choice.choice
 yq  -i ".items[0].parameters[0].choice.choices = ${PARAM_CHOICE_VALUES}" ./casc-freestylejob.yaml
 cat ./casc-freestylejob.yaml
 cat ./casc-pipelinejob.yaml
-#updateJob $PIPELINE_JOB
-#updateJob $FREESTYLE_JOB
+updateJob ./casc-freestylejob.yaml
+updateJob ./casc-pipelinejob.yaml
 
 
