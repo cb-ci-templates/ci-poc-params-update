@@ -2,37 +2,28 @@
 
 
 
-echo "USage: $0: testcontroller myjobname"
+echo "USage: $0: JENKINS_TOKEN myjobname"
 
-export CONTROLLER_NAME=${1:-$CONTROLLER_NAME}
-export CONTROLLER_URL=${BASE_URL}"/"${CONTROLLER_NAME}
-export JOB_NAME=${2:-$JOB_NAME}
-export JENKINS_TOKEN=${3:-"user:token"}
-export NEW_VALUE_STRING=${4:-'["value1", "value2"]'}
-export RESOURCES_DIR=resources
+export CONTROLLER_URL=${JENKINS_URL}
+export JENKINS_TOKEN=${1:-"user:token"}
+export PARAM_CHOICE_VALUES=${2:-'["value1", "value2"]'}
 
-#items:
-#  - kind: pipeline
-#    name: ${JOB_NAME}
-#    concurrentBuild: true
-#    properties:
-#      - parameters:
-#          parameterDefinitions:
-#            - choice:
-#                name: OPTION
-#                choices:
-#                  - dev
-#                  - main
-#    resumeBlocked: false
-
+function updateJob(){
+  echo "------------------  CREATE/UPDATE JOBS------------------"
+  echo "$1"
+  curl -v -XPOST \
+     --user $JENKINS_TOKEN \
+     "${CONTROLLER_URL}/casc-items/create-items" \
+      -H "Content-Type:text/yaml" \
+     --data-binary @$1
+}
 
 #yq  '.items[0].properties[0].parameters.parameterDefinitions[0].choice.choices = ["dev","test"]' tmp-casc-pipelinejob.yaml
-yq  '.items[0].properties[0].parameters.parameterDefinitions[0].choice.choices = ["dev","test"]' ./casc-pipelinejob.yaml
-yq  '.items[0].parameters[0].choice.choices = ["dev","test"]' ./casc-freestylejob.yaml
+yq  -i ".items[0].properties[0].parameters.parameterDefinitions[0].choice.choices = ${PARAM_CHOICE_VALUES}" ./casc-pipelinejob.yaml
+yq  -i ".items[0].parameters[0].choice.choices = ${PARAM_CHOICE_VALUES}" ./casc-freestylejob.yaml
+cat ./casc-freestylejob.yaml
+cat ./casc-pipelinejob.yaml
+#updateJob $PIPELINE_JOB
+#updateJob $FREESTYLE_JOB
 
-echo "------------------  CREATE/UPDATE JOBS------------------"
-#curl -v -XPOST \
-#   --user $TOKEN \
-#   "${CONTROLLER_URL}/casc-items/create-items" \
-#    -H "Content-Type:text/yaml" \
-#   --data-binary @$RESOURCES_DIR/casc-freestylejob.yaml
+

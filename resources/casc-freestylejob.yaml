@@ -2,26 +2,24 @@ removeStrategy:
   rbac: SYNC
   items: NONE
 items:
-- kind: freeStyle
-  name: ${JOB_NAME}
-  blockBuildWhenDownstreamBuilding: false
-  blockBuildWhenUpstreamBuilding: false
-  builders:
-    - shell:
-        command: 'echo OPTION SELECTED: ^${OPTION}'
-  concurrentBuild: false
-  description: ''
-  disabled: false
-  displayName: ${JOB_NAME}
-  parameters:
-    - choice:
-        name: OPTION
-        choices:
-          - dev
-          - main
-  scm:
-    none: {
-    }
-  scmCheckoutStrategy:
-    standard: {
-    }
+  - kind: freeStyle
+    name: example-parameter-freestylejob
+    blockBuildWhenDownstreamBuilding: false
+    blockBuildWhenUpstreamBuilding: false
+    builders:
+      - shell:
+          command: 'echo OPTION SELECTED: ${OPTION}'
+    concurrentBuild: false
+    description: ''
+    disabled: false
+    displayName: example-parameter-freestylejob
+    parameters:
+      - choice:
+          name: OPTION
+          choices:
+            - value1
+            - value2
+    scm:
+      none: {}
+    scmCheckoutStrategy:
+      standard: {}
