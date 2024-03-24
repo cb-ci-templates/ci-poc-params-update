@@ -11,9 +11,10 @@ import jenkins.model.Jenkins
 /**
  * Add a parameter. Override if it does already exist.
  */
-def updateParams(String jobName,String paramName,String[] choices) {
+def updateParams(String jobName,String paramName,String choices) {
     def parameterDescription = 'Updated by Groovy'
     //String[] choices = ["Choice1","Choice2","Choice3"] // List of choices
+    String[] tmpChoices=[choices]
     //Retrieve the Job by name
     Job job = Jenkins.instance.getAllItems(Job.class).find { job -> jobName == job.name }
     //Retrieve the ParametersDefinitionProperty that contains the list of parameters.
@@ -30,7 +31,7 @@ def updateParams(String jobName,String paramName,String[] choices) {
         }
         println("--- Add Parameter(key=${jobName}, defaultValue=${paramName})  ---")
         // Update the choices
-        ChoiceParameterDefinition choiceParameter = new ChoiceParameterDefinition(paramName, choices, parameterDescription)
+        ChoiceParameterDefinition choiceParameter = new ChoiceParameterDefinition(paramName, tmpChoices, parameterDescription)
         parametersDefinitionProperty.getParameterDefinitions().add(choiceParameter)
         //Save the job
         job.save()
@@ -68,7 +69,8 @@ pipeline {
                 container("shell") {
                     //This shared library method set the git branches to environment variable $GIT_REMOTE_BRANCHES
                     getGitBranches("$GH_ACCESS_TOKEN", "$GH_API_REPO_BRANCH")
-                    updateParams("example-pipeline","OPTION",[${env.GIT_REPO_BRANCHES}])
+                    ${env.GIT_REPO_BRANCHES}
+                    updateParams("example-pipeline","OPTION","${env.GIT_REPO_BRANCHES}")
                 }
             }
         }
