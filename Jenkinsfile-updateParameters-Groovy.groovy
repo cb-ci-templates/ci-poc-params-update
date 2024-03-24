@@ -12,8 +12,8 @@ import jenkins.model.Jenkins
  */
 def updateParams(String jobName,String paramName) {
 
-
-    def choiceParameter = new ChoiceParameterDefinition(parameterName, choices.join('\n'), parameterDescription)
+    def parameterDescription = 'Your parameter description'
+    def choiceParameter = new ChoiceParameterDefinition(paramName, choices.join('\n'), parameterDescription)
 
     //Retrieve the Job by name
     Job job = Jenkins.instance.getAllItems(Job.class).find { job -> jobName == job.name }
@@ -34,11 +34,6 @@ def updateParams(String jobName,String paramName) {
         //Save the job
         job.save()
     }
-
-
-
-
-
 }
 
 pipeline {
