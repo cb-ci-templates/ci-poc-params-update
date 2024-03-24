@@ -62,6 +62,8 @@ def updateParams(String jobName,String paramName) {
     def parametersDefinitionProperty = job.getProperty(ParametersDefinitionProperty.class)
     println parametersDefinitionProperty.class
     if (parametersDefinitionProperty != null) {
+        println "HERE "
+        println parametersDefinitionProperty.getParameterDefinition(paramName).class
         //Retrieve the ParameterDefinition by name
         def parameterDefinition = parametersDefinitionProperty.getParameterDefinition(paramName)
         println parameterDefinition.class
