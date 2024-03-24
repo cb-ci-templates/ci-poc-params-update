@@ -4,8 +4,47 @@ library identifier: 'ci-shared-library@main', retriever: modernSCM(
 
 import hudson.model.Job
 import hudson.model.ParametersDefinitionProperty
-import hudson.model.StringParameterDefinition
 import jenkins.model.Jenkins
+
+
+def createParam(String name){
+    com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterDefinition test = new com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterDefinition(
+            name,
+            "PT_SINGLE_SELECT",
+            "VALUE, A, B",
+            null,//project name
+            null,
+            null,
+            null,
+            null,// bindings
+            null,
+            null, // propertykey
+            "VALUE, B", //default value
+            null,
+            null,
+            null,
+            null, //default bindings
+            null,
+            null,
+            null, //descriptionPropertyValue
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,// javascript file
+            null, // javascript
+            false, // save json param to file
+            false, // quote
+            2, // visible item count
+            "DESC",
+            ","
+    )
+    return testBored
+}
+
+
 
 /**
  * Add a parameter. Override if it does already exist.
@@ -15,23 +54,22 @@ def updateParams(String jobName,String paramName) {
     def choices = ['Choice1', 'Choice2', 'Choice3'] // List of choices
     def choiceParameter = new ChoiceParameterDefinition(paramName, choices.join('\n'), parameterDescription)
 
+
     //Retrieve the Job by name
     Job job = Jenkins.instance.getAllItems(Job.class).find { job -> jobName == job.name }
     //Retrieve the ParametersDefinitionProperty that contains the list of parameters.
-    ParametersDefinitionProperty jobProp = job.getProperty(ParametersDefinitionProperty.class)
+    ParametersDefinitionProperty parametersDefinitionProperty = job.getProperty(ParametersDefinitionProperty.class)
     if (jobProp != null) {
         //Retrieve the ParameterDefinition by name
-        ParameterDefinition parameterDefinition = jobProp.getParameterDefinition(paramName)
+        ParameterDefinition parameterDefinition = parametersDefinitionProperty.getParameterDefinition(paramName)
         //If the parameter exists, remove it
         if (parameterDefinition) {
             println("--- Parameter ${paramName} already exists, removing it ---")
-            jobProp.getParameterDefinitions().remove(parameterDefinition)
+            parametersDefinitionProperty.getParameterDefinitions().remove(parameterDefinition)
         }
-        //Add the parameter (here a StringParameter)
         println("--- Add Parameter(key=${jobName}, defaultValue=${paramName})  ---")
         // Update the choices
-        jobProp.getParameterDefinitions().add(new ParametersDefinition(choiceParameter))
-        //jobProp.getParameterDefinitions().add(choiceParameter)
+        parametersDefinitionProperty.add(createParam())
         //Save the job
         job.save()
     }
