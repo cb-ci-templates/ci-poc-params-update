@@ -32,10 +32,10 @@ pipeline {
             steps {
                 container("shell") {
                     withCredentials([string(credentialsId: 'jenkins-token', variable: 'JENKINS_TOKEN')]) {
-                        dir("resources") {
+                        dir("src/main/resources") {
                             //Shared Lib function collects al remote branches and exposes to env.GIT_REPO_BRANCHES}
                             getGitBranches("$GH_ACCESS_TOKEN", "$GH_API_REPO_BRANCH")
-                            sh(script: "resources/casc-updateJobParams.sh ${JENKINS_TOKEN} [${env.GIT_REPO_BRANCHES}]", returnStatus: true)
+                            sh(script: "./casc-updateJobParams.sh ${JENKINS_TOKEN} [${env.GIT_REPO_BRANCHES}]", returnStatus: true)
                         }
                     }
                 }
