@@ -6,7 +6,7 @@ import hudson.model.Job
 import hudson.model.ParametersDefinitionProperty
 import jenkins.model.Jenkins
 
-
+//see https://gist.github.com/jgraglia/44a7443847cff6f0d87387a46c7bb82f
 def createParam(String name){
     com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterDefinition test = new com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterDefinition(
             name,
@@ -57,6 +57,7 @@ def updateParams(String jobName,String paramName) {
 
     //Retrieve the Job by name
     Job job = Jenkins.instance.getAllItems(Job.class).find { job -> jobName == job.name }
+
     //Retrieve the ParametersDefinitionProperty that contains the list of parameters.
     ParametersDefinitionProperty parametersDefinitionProperty = job.getProperty(ParametersDefinitionProperty.class)
     if (parametersDefinitionProperty != null) {
@@ -69,7 +70,7 @@ def updateParams(String jobName,String paramName) {
         }
         println("--- Add Parameter(key=${jobName}, defaultValue=${paramName})  ---")
         // Update the choices
-        parametersDefinitionProperty.add(createParam(paramName))
+        parametersDefinitionProperty.getParameterDefinitions().add(createParam(paramName))
         //Save the job
         job.save()
     }
