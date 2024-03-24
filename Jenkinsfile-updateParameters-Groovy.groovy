@@ -11,11 +11,32 @@ import jenkins.model.Jenkins
  * Add a parameter. Override if it does already exist.
  */
 def updateParams(String jobName,String paramName) {
+
+
     def newChoices = ['New_Choice_1', 'New_Choice_2', 'New_Choice_3']
-    // Get the job instance
-    def job = Jenkins.instance.getItem(jobName)
-    // Find the parameter definition
-    def paramDefinition = job.getProperty(ParametersDefinitionProperty.class).getParameterDefinition(paramName)
+    //Retrieve the Job by name
+    Job job = Jenkins.instance.getAllItems(Job.class).find { job -> jobName == job.name }
+    //Retrieve the ParametersDefinitionProperty that contains the list of parameters.
+    ParametersDefinitionProperty jobProp = job.getProperty(ParametersDefinitionProperty.class)
+    if (jobProp != null) {
+        //Retrieve the ParameterDefinition by name
+        def param = jobProp.getParameterDefinition(paramName)
+        //If the parameter exists, remove it
+        if (param) {
+            println("--- Parameter ${paramName} already exists, removing it ---")
+            jobProp.getParameterDefinitions().remove(param)
+        }
+        //Add the parameter (here a StringParameter)
+        println("--- Add Parameter(key=${jobName}, defaultValue=${paramName})  ---")
+        // Update the choices
+        jobProp.getParameterDefinitions().setChoices(newChoices)
+        //jobProp.getParameterDefinitions().add(new ExtendedChoiceParameterDefinition(newChoices))
+        //Save the job
+        job.save()
+    }
+
+
+
     // Update the choices
     paramDefinition.setChoices(newChoices)
     // Save the updated job configuration
