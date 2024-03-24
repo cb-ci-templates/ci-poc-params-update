@@ -11,7 +11,7 @@ import jenkins.model.Jenkins
 /**
  * Add a parameter. Override if it does already exist.
  */
-def updateParams(String jobName,String paramName,String [] choices) {
+def updateParams(String jobName,String paramName,String[] choices) {
     def parameterDescription = 'Updated by Groovy'
     //String[] choices = ["Choice1","Choice2","Choice3"] // List of choices
     //Retrieve the Job by name
