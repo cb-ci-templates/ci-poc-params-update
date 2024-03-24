@@ -62,12 +62,14 @@ def updateParams(String jobName,String paramName) {
     //Retrieve the ParametersDefinitionProperty that contains the list of parameters.
     ParametersDefinitionProperty parametersDefinitionProperty = job.getProperty(ParametersDefinitionProperty.class)
     println parametersDefinitionProperty.class
+    println parametersDefinitionProperty
     if (parametersDefinitionProperty != null) {
         println "HERE "
+        println parametersDefinitionProperty.getParameterDefinitions()
         println parametersDefinitionProperty.getParameterDefinition(paramName)
         //Retrieve the ParameterDefinition by name
-        def parameterDefinition = parametersDefinitionProperty.getParameterDefinition(paramName)
-        println parameterDefinition.class
+       // def parameterDefinition = parametersDefinitionProperty.getParameterDefinition(paramName)
+        //println parameterDefinition.class
 
         //If the parameter exists, remove it
     /*    if (parameterDefinition) {
