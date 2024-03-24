@@ -13,7 +13,8 @@ import jenkins.model.Jenkins
 def updateParams(String jobName,String paramName) {
 
 
-    def newChoices = ['New_Choice_1', 'New_Choice_2', 'New_Choice_3']
+    def choiceParameter = new ChoiceParameterDefinition(parameterName, choices.join('\n'), parameterDescription)
+
     //Retrieve the Job by name
     Job job = Jenkins.instance.getAllItems(Job.class).find { job -> jobName == job.name }
     //Retrieve the ParametersDefinitionProperty that contains the list of parameters.
@@ -29,18 +30,15 @@ def updateParams(String jobName,String paramName) {
         //Add the parameter (here a StringParameter)
         println("--- Add Parameter(key=${jobName}, defaultValue=${paramName})  ---")
         // Update the choices
-        jobProp.getParameterDefinitions().setChoices(newChoices)
-        //jobProp.getParameterDefinitions().add(new ExtendedChoiceParameterDefinition(newChoices))
+        jobProp.getParameterDefinitions().add(new ParametersDefinitionProperty(choiceParameter))
         //Save the job
         job.save()
     }
 
 
 
-    // Update the choices
-    paramDefinition.setChoices(newChoices)
-    // Save the updated job configuration
-    job.save()
+
+
 }
 
 pipeline {
