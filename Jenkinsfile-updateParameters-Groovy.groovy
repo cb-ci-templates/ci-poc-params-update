@@ -10,7 +10,7 @@ import jenkins.model.Jenkins
 //see https://gist.github.com/jgraglia/44a7443847cff6f0d87387a46c7bb82f
 def createParam(String name){
     //API https://javadoc.jenkins.io/plugin/extended-choice-parameter/com/cwctravel/hudson/plugins/extended_choice_parameter/ExtendedChoiceParameterDefinition.html
-    com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterDefinition test = new com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterDefinition(
+    com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterDefinition nyparam = new com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterDefinition(
             name,
             "PT_SINGLE_SELECT",
             "VALUE, A, B",
@@ -43,7 +43,7 @@ def createParam(String name){
             "DESC",
             ","
     )
-    return testBored
+    return nyparam
 }
 
 
