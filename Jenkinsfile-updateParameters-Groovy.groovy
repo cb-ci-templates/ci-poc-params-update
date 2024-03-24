@@ -62,7 +62,7 @@ def updateParams(String jobName,String paramName) {
     ParametersDefinitionProperty parametersDefinitionProperty = job.getProperty(ParametersDefinitionProperty.class)
     if (parametersDefinitionProperty != null) {
         //Retrieve the ParameterDefinition by name
-        //ParameterDefinition parameterDefinition = parametersDefinitionProperty.getParameterDefinition(paramName)
+        ParameterDefinition parameterDefinition = parametersDefinitionProperty.getParameterDefinition(paramName)
         //If the parameter exists, remove it
     /*    if (parameterDefinition) {
             println("--- Parameter ${paramName} already exists, removing it ---")
