@@ -19,10 +19,11 @@ function updateJob(){
 }
 
 YQ=".items[0].properties[0].parameters.parameterDefinitions[0].choice.choices = $PARAM_CHOICE_VALUES"
-echo "YQ QUERY: $YQ"
-yq  "$YQ" ./casc-pipelinejob.yaml > ./updated-casc-pipelinejob.yaml
-diff -c ./casc-pipelinejob.yaml ./updated-casc-pipelinejob.yaml
-#updateJob updated-casc-pipelinejob.yaml
+echo $YQ
+#yq 'eval(env(YQ))' ./casc-pipelinejob.yaml > ./updated-casc-pipelinejob.yaml
+yq '.items[0].properties[0].parameters.parameterDefinitions[0].choice.choices = env(PARAM_CHOICE_VALUES)' ./casc-pipelinejob.yaml > ./updated-casc-pipelinejob.yaml
+diff -u ./casc-pipelinejob.yaml ./updated-casc-pipelinejob.yaml
+updateJob updated-casc-pipelinejob.yaml
 
 #yq -i '.items[0].parameters[0].choice.choices = env(PARAM_CHOICE_VALUES)' ./casc-freestylejob.yaml > ./updated-casc-freestylejob.yaml
 #cat ./casc-freestylejob.yaml
