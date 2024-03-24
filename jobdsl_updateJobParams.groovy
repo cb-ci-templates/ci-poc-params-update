@@ -3,7 +3,6 @@ def myparam="$params"
 ArrayList elements = myparam.split(',')
 // Create ArrayList and add elements
 def arrayList = new ArrayList(elements)
-println arrayList
 
 pipelineJob('example-pipeline') {
     description('Updated by Job-DSL')

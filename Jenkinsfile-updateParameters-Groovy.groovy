@@ -14,7 +14,7 @@ import jenkins.model.Jenkins
 def updateParams(String jobName,String paramName,String choices) {
     def parameterDescription = 'Updated by Groovy'
     //String[] choices = ["Choice1","Choice2","Choice3"] // List of choices
-    String[] tmpChoices=[choices]
+    String[] tmpChoices=choices.split(',')
     //Retrieve the Job by name
     Job job = Jenkins.instance.getAllItems(Job.class).find { job -> jobName == job.name }
     job.setDescription("Updated by Groovy")
