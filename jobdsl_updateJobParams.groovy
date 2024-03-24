@@ -5,7 +5,7 @@ ArrayList elements = myparam.split(',')
 def arrayList = new ArrayList(elements)
 println arrayList
 
-pipelineJob('example-pipelinejob') {
+pipelineJob('example-pipeline') {
     parameters {
         choiceParam('OPTION',arrayList)
     }

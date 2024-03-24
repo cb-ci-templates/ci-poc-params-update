@@ -67,7 +67,7 @@ pipeline {
             steps {
                 container("shell") {
                     getGitBranches("$GH_ACCESS_TOKEN", "$GH_API_REPO_BRANCH")
-                    updateParams("example-dsl-pipelinejob","OPTION",$GIT_REMOTE_BRANCHES)
+                    updateParams("example-pipeline","OPTION",$GIT_REMOTE_BRANCHES)
                 }
             }
         }
