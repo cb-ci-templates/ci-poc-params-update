@@ -7,13 +7,14 @@ echo "Call: $0 $@"
 export CONTROLLER_URL=${JENKINS_URL}
 export JENKINS_TOKEN=${1:-"user:token"}
 export PARAM_CHOICE_VALUES=${2:-'["new1", "mew2"]'}
+export JOB_FOLDER=${3:-"$(echo "$string" | sed 's|/[^/]*$||')"}
 
 function updateJob(){
-  echo "------------------  CREATE/UPDATE JOBS $1 | $JENKINS_TOKEN------------------"
-  echo "$1"
+  echo "------------------  CREATE/UPDATE Job:  yaml:$1 in folder $JOB_FOLDER using $JENKINS_TOKEN------------------"
+  #see https://docs.cloudbees.com/docs/cloudbees-ci-api/latest/bundle-management-api
   curl -Ls -XPOST \
      --user $JENKINS_TOKEN \
-     "${CONTROLLER_URL}/casc-items/create-items" \
+     "${CONTROLLER_URL}/casc-items/create-items?path=$JOB_FOLDER" \
       -H "Content-Type:text/yaml" \
      --data-binary @$1
 }
