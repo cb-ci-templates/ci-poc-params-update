@@ -4,7 +4,7 @@ library identifier: 'ci-shared-library@main', retriever: modernSCM(
 
 import hudson.model.Job
 import hudson.model.ParametersDefinitionProperty
-import hudson.model.ParametersDefinition
+import hudson.model.ParameterDefinition
 import jenkins.model.Jenkins
 
 //see https://gist.github.com/jgraglia/44a7443847cff6f0d87387a46c7bb82f
