@@ -66,8 +66,9 @@ pipeline {
         stage('UpdateParams') {
             steps {
                 container("shell") {
+                    //This shared library method set the git branches to environment variable $GIT_REMOTE_BRANCHES
                     getGitBranches("$GH_ACCESS_TOKEN", "$GH_API_REPO_BRANCH")
-                    updateParams("example-pipeline","OPTION",$GIT_REMOTE_BRANCHES)
+                    updateParams("example-pipeline","OPTION","$GIT_REMOTE_BRANCHES")
                 }
             }
         }
