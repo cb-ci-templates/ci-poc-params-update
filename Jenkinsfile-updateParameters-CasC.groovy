@@ -30,7 +30,7 @@ pipeline {
     stages {
         stage('SeedDSL') {
             steps {
-                container("shell") {
+                container("UpdateParams") {
                     withCredentials([string(credentialsId: 'jenkins-token', variable: 'JENKINS_TOKEN')]) {
                         dir("resources") {
                             //Shared Lib function collects al remote branches and exposes to env.GIT_REPO_BRANCHES}

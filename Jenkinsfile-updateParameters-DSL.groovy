@@ -28,7 +28,7 @@ pipeline {
         //GIT_REMOTE_BRANCHES = "one, two, three" // For testing purpose
     }
     stages {
-        stage('SeedDSL') {
+        stage('UpdateParams') {
             steps {
                 container("shell") {
                     jobDsl targets: ['resources/jobdsl_updateJobParams.groovy'].join('\n'),
