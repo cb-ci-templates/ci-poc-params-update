@@ -8,12 +8,12 @@ import hudson.model.ParameterDefinition
 import jenkins.model.Jenkins
 
 //see https://gist.github.com/jgraglia/44a7443847cff6f0d87387a46c7bb82f
-def createParam(String name){
+def createParam(String name,String choice){
     //API https://javadoc.jenkins.io/plugin/extended-choice-parameter/com/cwctravel/hudson/plugins/extended_choice_parameter/ExtendedChoiceParameterDefinition.html
     com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterDefinition nyparam = new com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterDefinition(
             name,
             "PT_SINGLE_SELECT",
-            "VALUE, A, B",
+            choice,
             null,//project name
             null,
             null,
@@ -53,30 +53,27 @@ def createParam(String name){
  */
 def updateParams(String jobName,String paramName) {
     def parameterDescription = 'Your parameter description'
-    def choices = ['Choice1', 'Choice2', 'Choice3'] // List of choices
+    def choices = "'Choice1', 'Choice2', 'Choice3'" // List of choices
     def choiceParameter = new ChoiceParameterDefinition(paramName, choices.join('\n'), parameterDescription)
-
 
     //Retrieve the Job by name
     Job job = Jenkins.instance.getAllItems(Job.class).find { job -> jobName == job.name }
-
     //Retrieve the ParametersDefinitionProperty that contains the list of parameters.
     ParametersDefinitionProperty parametersDefinitionProperty = job.getProperty(ParametersDefinitionProperty.class)
     if (parametersDefinitionProperty != null) {
-        println "HERE "
-        job.removeProperty(parametersDefinitionProperty)
-        job.addProperty(createParam(paramName))
+        //job.removeProperty(parametersDefinitionProperty)
+        //job.addProperty(createParam(paramName))
         //Retrieve the ParameterDefinition by name
-        //def parameterDefinition = parametersDefinitionProperty.getParameterDefinition(paramName)
+        def parameterDefinition = parametersDefinitionProperty.getParameterDefinition(paramName)
         //println parameterDefinition.class
         //If the parameter exists, remove it
-        /*if (parameterDefinition) {
+        if (parameterDefinition) {
             println("--- Parameter ${paramName} already exists, removing it ---")
             parametersDefinitionProperty.getParameterDefinitions().remove(parameterDefinition)
-        }*/
-        //println("--- Add Parameter(key=${jobName}, defaultValue=${paramName})  ---")
+        }
+        println("--- Add Parameter(key=${jobName}, defaultValue=${paramName})  ---")
         // Update the choices
-        //parametersDefinitionProperty.getParameterDefinitions().add(createParam(paramName))
+        parametersDefinitionProperty.getParameterDefinitions().add(createParam(paramName,choiceParameter))
         //Save the job
         job.save()
     }
