@@ -31,7 +31,8 @@ def updateParams(String jobName,String paramName) {
         //Add the parameter (here a StringParameter)
         println("--- Add Parameter(key=${jobName}, defaultValue=${paramName})  ---")
         // Update the choices
-        jobProp.getParameterDefinitions().add(new ParametersDefinitionProperty(choiceParameter))
+        //jobProp.getParameterDefinitions().add(new ParametersDefinitionProperty(choiceParameter))
+        jobProp.getParameterDefinitions().add(choiceParameter)
         //Save the job
         job.save()
     }
