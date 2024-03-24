@@ -2,7 +2,7 @@
 
 
 echo "Usage: $0: JENKINS_TOKEN CHOICE_VALUES"
-echo 'Example: : casc-updateJobParams.sh youradminuser:yourjenkinstoken '["value1","value2"]''
+echo "Example: : $0 youradminuser:yourjenkinstoken '[\"value1\",\"value2\"]'"
 echo "Call: $0 $@"
 export CONTROLLER_URL=${JENKINS_URL}
 export JENKINS_TOKEN=${1:-"user:token"}
