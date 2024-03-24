@@ -59,7 +59,8 @@ def updateParams(String jobName,String paramName) {
     Job job = Jenkins.instance.getAllItems(Job.class).find { job -> jobName == job.name }
 
     //Retrieve the ParametersDefinitionProperty that contains the list of parameters.
-    ParametersDefinitionProperty parametersDefinitionProperty = job.getProperty(ParametersDefinitionProperty.class)
+    def parametersDefinitionProperty = job.getProperty(ParametersDefinitionProperty.class)
+    println parametersDefinitionProperty.class
     if (parametersDefinitionProperty != null) {
         //Retrieve the ParameterDefinition by name
         ParameterDefinition parameterDefinition = parametersDefinitionProperty.getParameterDefinition(paramName)
