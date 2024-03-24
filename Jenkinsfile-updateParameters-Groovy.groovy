@@ -11,10 +11,9 @@ import jenkins.model.Jenkins
 /**
  * Add a parameter. Override if it does already exist.
  */
-def updateParams(String jobName,String paramName,String [] newChoices) {
+def updateParams(String jobName,String paramName,String [] choices) {
     def parameterDescription = 'Your parameter description'
     //String[] choices = ["Choice1","Choice2","Choice3"] // List of choices
-    String[] choices = newchoices
     //Retrieve the Job by name
     Job job = Jenkins.instance.getAllItems(Job.class).find { job -> jobName == job.name }
     //Retrieve the ParametersDefinitionProperty that contains the list of parameters.
