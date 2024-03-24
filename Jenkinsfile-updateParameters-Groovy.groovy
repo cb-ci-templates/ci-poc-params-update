@@ -4,6 +4,7 @@ library identifier: 'ci-shared-library@main', retriever: modernSCM(
 
 import hudson.model.Job
 import hudson.model.ParametersDefinitionProperty
+import hudson.model.ParametersDefinition
 import jenkins.model.Jenkins
 
 //see https://gist.github.com/jgraglia/44a7443847cff6f0d87387a46c7bb82f
@@ -59,11 +60,11 @@ def updateParams(String jobName,String paramName) {
     Job job = Jenkins.instance.getAllItems(Job.class).find { job -> jobName == job.name }
 
     //Retrieve the ParametersDefinitionProperty that contains the list of parameters.
-    def parametersDefinitionProperty = job.getProperty(ParametersDefinitionProperty.class)
+    ParametersDefinitionProperty parametersDefinitionProperty = job.getProperty(ParametersDefinitionProperty.class)
     println parametersDefinitionProperty.class
     if (parametersDefinitionProperty != null) {
         println "HERE "
-        println parametersDefinitionProperty.getParameterDefinition(paramName).class
+        println parametersDefinitionProperty.getParameterDefinition(paramName)
         //Retrieve the ParameterDefinition by name
         def parameterDefinition = parametersDefinitionProperty.getParameterDefinition(paramName)
         println parameterDefinition.class
