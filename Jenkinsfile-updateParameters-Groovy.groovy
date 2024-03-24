@@ -54,7 +54,6 @@ def createParam(String name,String choice){
 def updateParams(String jobName,String paramName) {
     def parameterDescription = 'Your parameter description'
     def choices = "'Choice1', 'Choice2', 'Choice3'" // List of choices
-    ChoiceParameterDefinition choiceParameter = new ChoiceParameterDefinition(paramName, choices.join('\n'), parameterDescription)
 
     //Retrieve the Job by name
     Job job = Jenkins.instance.getAllItems(Job.class).find { job -> jobName == job.name }
@@ -62,10 +61,7 @@ def updateParams(String jobName,String paramName) {
     println job.getProperty(ParametersDefinitionProperty.class)
     ParametersDefinitionProperty parametersDefinitionProperty = job.getProperty(ParametersDefinitionProperty.class)
     println "Here"
-
     if (parametersDefinitionProperty != null) {
-        //job.removeProperty(parametersDefinitionProperty)
-        //job.addProperty(createParam(paramName))
         //Retrieve the ParameterDefinition by name
         def parameterDefinition = parametersDefinitionProperty.getParameterDefinition(paramName)
         //println parameterDefinition.class
@@ -76,7 +72,8 @@ def updateParams(String jobName,String paramName) {
         }
         println("--- Add Parameter(key=${jobName}, defaultValue=${paramName})  ---")
         // Update the choices
-        parametersDefinitionProperty.getParameterDefinitions().add(createParam(paramName,choiceParameter))
+        ChoiceParameterDefinition choiceParameter = new ChoiceParameterDefinition(paramName, choices.join('\n'), parameterDescription)
+        parametersDefinitionProperty.getParameterDefinitions().add(choiceParameter)
         //Save the job
         job.save()
     }
