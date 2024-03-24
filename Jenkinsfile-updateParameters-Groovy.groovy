@@ -59,7 +59,7 @@ def updateParams(String jobName,String paramName) {
     Job job = Jenkins.instance.getAllItems(Job.class).find { job -> jobName == job.name }
     //Retrieve the ParametersDefinitionProperty that contains the list of parameters.
     ParametersDefinitionProperty parametersDefinitionProperty = job.getProperty(ParametersDefinitionProperty.class)
-    if (jobProp != null) {
+    if (parametersDefinitionProperty != null) {
         //Retrieve the ParameterDefinition by name
         ParameterDefinition parameterDefinition = parametersDefinitionProperty.getParameterDefinition(paramName)
         //If the parameter exists, remove it
@@ -69,7 +69,7 @@ def updateParams(String jobName,String paramName) {
         }
         println("--- Add Parameter(key=${jobName}, defaultValue=${paramName})  ---")
         // Update the choices
-        parametersDefinitionProperty.add(createParam())
+        parametersDefinitionProperty.add(createParam(paramName))
         //Save the job
         job.save()
     }
