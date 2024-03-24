@@ -6,6 +6,7 @@ def arrayList = new ArrayList(elements)
 println arrayList
 
 pipelineJob('example-pipeline') {
+    description('Updated by Job-DSL')
     parameters {
         choiceParam('OPTION',arrayList)
     }

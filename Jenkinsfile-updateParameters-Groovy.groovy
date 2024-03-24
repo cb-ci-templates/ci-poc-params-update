@@ -17,6 +17,7 @@ def updateParams(String jobName,String paramName,String choices) {
     String[] tmpChoices=[choices]
     //Retrieve the Job by name
     Job job = Jenkins.instance.getAllItems(Job.class).find { job -> jobName == job.name }
+    job.setDescription("Updated by Groovy")
     //Retrieve the ParametersDefinitionProperty that contains the list of parameters.
     println job.getProperty(ParametersDefinitionProperty.class)
     ParametersDefinitionProperty parametersDefinitionProperty = job.getProperty(ParametersDefinitionProperty.class)
