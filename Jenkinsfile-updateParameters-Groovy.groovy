@@ -53,7 +53,7 @@ def createParam(String name,String choice){
  */
 def updateParams(String jobName,String paramName) {
     def parameterDescription = 'Your parameter description'
-    String choices = "'Choice1', 'Choice2', 'Choice3'" // List of choices
+    String choices = "Choice1\n,Choice2\n,Choice3\n" // List of choices
 
     //Retrieve the Job by name
     Job job = Jenkins.instance.getAllItems(Job.class).find { job -> jobName == job.name }
