@@ -7,54 +7,14 @@ import hudson.model.ParametersDefinitionProperty
 import hudson.model.ChoiceParameterDefinition
 import jenkins.model.Jenkins
 
-//see https://gist.github.com/jgraglia/44a7443847cff6f0d87387a46c7bb82f
-def createParam(String name,String choice){
-    //API https://javadoc.jenkins.io/plugin/extended-choice-parameter/com/cwctravel/hudson/plugins/extended_choice_parameter/ExtendedChoiceParameterDefinition.html
-    com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterDefinition nyparam = new com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterDefinition(
-            name,
-            "PT_SINGLE_SELECT",
-            choice,
-            null,//project name
-            null,
-            null,
-            null,
-            null,// bindings
-            null,
-            null, // propertykey
-            "VALUE, B", //default value
-            null,
-            null,
-            null,
-            null, //default bindings
-            null,
-            null,
-            null, //descriptionPropertyValue
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,// javascript file
-            null, // javascript
-            false, // save json param to file
-            false, // quote
-            2, // visible item count
-            "DESC",
-            ","
-    )
-    return nyparam
-}
-
-
 
 /**
  * Add a parameter. Override if it does already exist.
  */
-def updateParams(String jobName,String paramName) {
+def updateParams(String jobName,String paramName,String [] newChoices) {
     def parameterDescription = 'Your parameter description'
-    String[] choices = ["Choice1","Choice2","Choice3"] // List of choices
-
+    //String[] choices = ["Choice1","Choice2","Choice3"] // List of choices
+    String[] choices = newchoices
     //Retrieve the Job by name
     Job job = Jenkins.instance.getAllItems(Job.class).find { job -> jobName == job.name }
     //Retrieve the ParametersDefinitionProperty that contains the list of parameters.
@@ -64,7 +24,6 @@ def updateParams(String jobName,String paramName) {
     if (parametersDefinitionProperty != null) {
         //Retrieve the ParameterDefinition by name
         def parameterDefinition = parametersDefinitionProperty.getParameterDefinition(paramName)
-        //println parameterDefinition.class
         //If the parameter exists, remove it
         if (parameterDefinition) {
             println("--- Parameter ${paramName} already exists, removing it ---")
@@ -72,7 +31,6 @@ def updateParams(String jobName,String paramName) {
         }
         println("--- Add Parameter(key=${jobName}, defaultValue=${paramName})  ---")
         // Update the choices
-        //ChoiceParameterDefinition choiceParameter = new ChoiceParameterDefinition(paramName, choices.join('\n'), parameterDescription)
         ChoiceParameterDefinition choiceParameter = new ChoiceParameterDefinition(paramName, choices, parameterDescription)
         parametersDefinitionProperty.getParameterDefinitions().add(choiceParameter)
         //Save the job
@@ -109,7 +67,7 @@ pipeline {
         stage('UpdateParams') {
             steps {
                 container("shell") {
-                    updateParams("example-dsl-pipelinejob","OPTION")
+                    updateParams("example-dsl-pipelinejob","OPTION",getGitBranches("$GH_ACCESS_TOKEN", "$GH_API_REPO_BRANCH"))
                 }
             }
         }
