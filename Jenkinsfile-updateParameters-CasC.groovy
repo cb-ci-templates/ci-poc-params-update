@@ -28,9 +28,9 @@ pipeline {
         //GIT_REMOTE_BRANCHES = "[one, two, three]" // For testing purpose
     }
     stages {
-        stage('SeedDSL') {
+        stage('UpdateParams') {
             steps {
-                container("UpdateParams") {
+                container("shell") {
                     withCredentials([string(credentialsId: 'jenkins-token', variable: 'JENKINS_TOKEN')]) {
                         dir("resources") {
                             //Shared Lib function collects al remote branches and exposes to env.GIT_REPO_BRANCHES}
