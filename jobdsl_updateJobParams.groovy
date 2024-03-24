@@ -4,17 +4,8 @@ ArrayList elements = myparam.split(',')
 // Create ArrayList and add elements
 def arrayList = new ArrayList(elements)
 println arrayList
-job('example-dsl-freestylejob') {
-    parameters {
-        choiceParam('OPTION',arrayList)
-    }
-    steps {
-        shell('echo OPTION SELECTED: ${OPTION}')
-    }
-}
 
-
-pipelineJob('example-dsl-pipelinejob') {
+pipelineJob('example-pipelinejob') {
     parameters {
         choiceParam('OPTION',arrayList)
     }
