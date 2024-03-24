@@ -3,7 +3,7 @@ removeStrategy:
   items: NONE
 items:
   - kind: pipeline
-    name: example-parameter-pipeline
+    name: example-parameter-casc-pipeline
     concurrentBuild: true
     definition:
       cpsFlowDefinition:
@@ -22,7 +22,7 @@ items:
           }
     description: ''
     disabled: false
-    displayName: example-parameter-pipeline
+    displayName: example-parameter-casc-pipeline
     properties:
       - parameters:
           parameterDefinitions:

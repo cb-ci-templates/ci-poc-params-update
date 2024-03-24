@@ -3,7 +3,7 @@ removeStrategy:
   items: NONE
 items:
   - kind: freeStyle
-    name: example-parameter-freestylejob
+    name: example-parameter-casc-freestylejob
     blockBuildWhenDownstreamBuilding: false
     blockBuildWhenUpstreamBuilding: false
     builders:
@@ -12,7 +12,7 @@ items:
     concurrentBuild: false
     description: ''
     disabled: false
-    displayName: example-parameter-freestylejob
+    displayName: example-parameter-casc-freestylejob
     parameters:
       - choice:
           name: OPTION
