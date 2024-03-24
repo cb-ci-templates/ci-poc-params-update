@@ -70,7 +70,7 @@ def updateParams(String jobName,String paramName) {
         }
         println("--- Add Parameter(key=${jobName}, defaultValue=${paramName})  ---")
         // Update the choices
-        parametersDefinitionProperty.getParameterDefinitions().add(createParam(paramName))
+       // parametersDefinitionProperty.getParameterDefinitions().add(createParam(paramName))
         //Save the job
         job.save()
     }
