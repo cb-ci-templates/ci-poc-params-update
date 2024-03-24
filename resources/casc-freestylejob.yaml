@@ -16,6 +16,7 @@ items:
     parameters:
       - choice:
           name: OPTION
+          description: Updated by Casc
           choices:
             - value1
             - value2

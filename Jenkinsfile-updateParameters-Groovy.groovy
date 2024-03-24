@@ -12,7 +12,7 @@ import jenkins.model.Jenkins
  * Add a parameter. Override if it does already exist.
  */
 def updateParams(String jobName,String paramName,String [] choices) {
-    def parameterDescription = 'Your parameter description'
+    def parameterDescription = 'Updated by Groovy'
     //String[] choices = ["Choice1","Choice2","Choice3"] // List of choices
     //Retrieve the Job by name
     Job job = Jenkins.instance.getAllItems(Job.class).find { job -> jobName == job.name }
@@ -66,7 +66,8 @@ pipeline {
         stage('UpdateParams') {
             steps {
                 container("shell") {
-                    updateParams("example-dsl-pipelinejob","OPTION",getGitBranches("$GH_ACCESS_TOKEN", "$GH_API_REPO_BRANCH"))
+                    getGitBranches("$GH_ACCESS_TOKEN", "$GH_API_REPO_BRANCH")
+                    updateParams("example-dsl-pipelinejob","OPTION",$GIT_REMOTE_BRANCHES)
                 }
             }
         }
