@@ -7,7 +7,8 @@ echo "Call: $0 $@"
 export CONTROLLER_URL=${JENKINS_URL}
 export JENKINS_TOKEN=${1:-"user:token"}
 export PARAM_CHOICE_VALUES=${2:-'["new1", "mew2"]'}
-export JOB_FOLDER=${3:-"$(echo "$string" | sed 's|/[^/]*$||')"}
+//We got JOB_NAME from Jenkins, we must delete the last path entry to get the Folder
+export JOB_FOLDER=${3:-"$(echo "$JOB_NAME" | sed 's|/[^/]*$|/|')"}
 
 function updateJob(){
   echo "------------------  CREATE/UPDATE Job:  yaml:$1 in folder $JOB_FOLDER using $JENKINS_TOKEN------------------"
