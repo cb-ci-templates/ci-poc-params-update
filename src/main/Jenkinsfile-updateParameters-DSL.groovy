@@ -31,7 +31,7 @@ pipeline {
         stage('UpdateParams') {
             steps {
                 container("shell") {
-                    jobDsl targets: ['./jobdsl_updateJobParams.groovy'].join('\n'),
+                    jobDsl targets: ['src/main/jobdsl_updateJobParams.groovy'].join('\n'),
                             removedJobAction: 'DELETE',
                             removedViewAction: 'DELETE',
                             lookupStrategy: 'SEED_JOB',
