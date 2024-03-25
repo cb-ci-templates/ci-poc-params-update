@@ -59,19 +59,21 @@ pipeline {
                 }
             }
             stage('PrintParam') {
-                container("git") {
-                    withCredentials([sshUserPrivateKey(credentialsId: 'github-user-ssh', keyFileVariable: 'CERT')]) {
-                        sh """
-                    mkdir -p ~/.ssh && chmod 700 ~/.ssh &&  cp -prf $CERT ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
-                    git config --global user.email \"acaternberg@cloudbees.com\"
-                    git config --global user.name \"cccaternberg\"
-                    eval `ssh-agent -s`  && ssh-add ~/.ssh/id_rsa
-                    ssh-keyscan -H github.com >> ~/.ssh/known_hosts
-                    echo \$(date +\"%Y-%m-%d %H:%M:%S\")  > resources/choices.txt
-                    git add resources/choices.txt
-                    git commit -m \"update value\"
-                    git push origin main
-                    """
+                steps {
+                    container("git") {
+                        withCredentials([sshUserPrivateKey(credentialsId: 'github-user-ssh', keyFileVariable: 'CERT', usernameVariable: 'SSH_USER')]) {
+                            sh """
+                            mkdir -p ~/.ssh && chmod 700 ~/.ssh &&  cp -prf $CERT ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+                            git config --global user.email \"acaternberg@cloudbees.com\"
+                            git config --global user.name $SSH_USER
+                            eval `ssh-agent -s`  && ssh-add ~/.ssh/id_rsa
+                            ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+                            echo \$(date +\"%Y-%m-%d %H:%M:%S\")  > resources/choices.txt
+                            git add resources/choices.txt
+                            git commit -m \"update value\"
+                            git push origin main
+                         """
+                        }
                     }
                 }
             }
