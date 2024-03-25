@@ -57,7 +57,7 @@ pipeline {
                 }
             }
         }
-        stage('PrintParam') {
+        stage('UpdateParamsInRepo') {
             steps {
                 container("git") {
                     withCredentials([sshUserPrivateKey(credentialsId: 'github-user-ssh', keyFileVariable: 'CERT', usernameVariable: 'SSH_USER')]) {
