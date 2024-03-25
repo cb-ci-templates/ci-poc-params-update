@@ -10,12 +10,11 @@ properties([parameters(
                         script: [classpath: [],
                                  oldScript: '',
                                  sandbox  : false, script: '''
-                                                def content=new URL ("https://raw.githubusercontent.com/cb-ci-templates/ci-poc-params-update/main/resources/choices.txt").getText()
-                                                def values = []
-                                                for(def line : content.split('\\n')) {
-                                                    values.add(line.trim())
-                                                }
-                                                return values                                            ''']
+def CREDENTIAL_ID = "gh-token-ci-templates-repo-classic"
+def SECRET = com.cloudbees.plugins.credentials.SystemCredentialsProvider.getInstance().getStore().getCredentials(com.cloudbees.plugins.credentials.domains.Domain.global()).find { it.getId().equals(CREDENTIAL_ID) }.getSecret().getPlainText()
+def URL = "https://" + SECRET + "@github.com/cb-ci-templates/ci-poc-params-update.git"
+def result = ["/bin/bash", "-c", "git ls-remote -h " + URL + " | sed 's/.*refs\\\\/heads\\\\/\\\\(.*\\\\)/\\\\1/'"].execute().text.tokenize();
+return result                                       ''']
                 )
         )
         ]
