@@ -72,6 +72,7 @@ pipeline {
                             eval `ssh-agent -s`  && ssh-add ~/.ssh/id_rsa
                             ssh-keyscan -H github.com >> ~/.ssh/known_hosts
                             echo \$(date +\"%Y-%m-%d,%H:%M:%S\")  > resources/choices.txt
+                            sleep 1
                             echo \$(date +\"%Y-%m-%d,%H:%M:%S\")  >> resources/choices.txt
                             git add resources/choices.txt
                             git commit -m \"update value\"
