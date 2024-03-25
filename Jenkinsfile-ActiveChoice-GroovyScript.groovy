@@ -12,7 +12,7 @@ properties([parameters(
                                  sandbox  : false, script: '''
                                                 def content=new URL ("https://raw.githubusercontent.com/cb-ci-templates/ci-poc-params-update/main/resources/choices.txt").getText()
                                                 def values = []
-                                                for(def line : content.split('\n')) {
+                                                for(def line : content.split('\\n')) {
                                                     values.add(line.trim())
                                                 }
                                                 return values                                            ''']
