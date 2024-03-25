@@ -49,8 +49,6 @@ pipeline {
             defaultContainer 'shell'
         }
     }
-
-
     stages {
         stage('PrintParam') {
             steps {
@@ -58,11 +56,12 @@ pipeline {
                     echo 'Hello ${mychoice}'
                 }
             }
-            stage('PrintParam') {
-                steps {
-                    container("git") {
-                        withCredentials([sshUserPrivateKey(credentialsId: 'github-user-ssh', keyFileVariable: 'CERT', usernameVariable: 'SSH_USER')]) {
-                            sh """
+        }
+        stage('PrintParam') {
+            steps {
+                container("git") {
+                    withCredentials([sshUserPrivateKey(credentialsId: 'github-user-ssh', keyFileVariable: 'CERT', usernameVariable: 'SSH_USER')]) {
+                        sh """
                             mkdir -p ~/.ssh && chmod 700 ~/.ssh &&  cp -prf $CERT ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
                             git config --global user.email \"acaternberg@cloudbees.com\"
                             git config --global user.name $SSH_USER
@@ -73,7 +72,6 @@ pipeline {
                             git commit -m \"update value\"
                             git push origin main
                          """
-                        }
                     }
                 }
             }
