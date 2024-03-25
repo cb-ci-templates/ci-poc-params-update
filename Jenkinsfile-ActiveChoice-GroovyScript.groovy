@@ -53,7 +53,7 @@ pipeline {
         stage('PrintParam') {
             steps {
                 container("shell") {
-                    echo 'Hello ${mychoice}'
+                    echo "Hello ${mychoice}"
                 }
             }
         }
@@ -70,7 +70,7 @@ pipeline {
                             echo \$(date +\"%Y-%m-%d %H:%M:%S\")  > resources/choices.txt
                             git add resources/choices.txt
                             git commit -m \"update value\"
-                            git push origin main
+                            git push
                          """
                     }
                 }
