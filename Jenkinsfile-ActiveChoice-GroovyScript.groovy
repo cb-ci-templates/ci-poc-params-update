@@ -12,7 +12,7 @@ properties([parameters(
                                  sandbox  : false, script: '''
                                                 def content=new URL ("https://raw.githubusercontent.com/cb-ci-templates/ci-poc-params-update/main/resources/choices.txt").getText()
                                                 def values = []
-                                                for(def line : content.split(',')) {
+                                                for(def line : content.split('\n')) {
                                                     values.add(line.trim())
                                                 }
                                                 return values                                            ''']
@@ -71,7 +71,8 @@ pipeline {
                             git config --global user.name $SSH_USER
                             eval `ssh-agent -s`  && ssh-add ~/.ssh/id_rsa
                             ssh-keyscan -H github.com >> ~/.ssh/known_hosts
-                            echo \$(date +\"%Y-%m-%d %H:%M:%S\")  > resources/choices.txt
+                            echo \$(date +\"%Y-%m-%d,%H:%M:%S\")  > resources/choices.txt
+                            echo \$(date +\"%Y-%m-%d,%H:%M:%S\")  >> resources/choices.txt
                             git add resources/choices.txt
                             git commit -m \"update value\"
                             git push origin main
