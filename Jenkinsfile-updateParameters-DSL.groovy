@@ -24,7 +24,7 @@ pipeline {
     }
     environment {
         GH_ACCESS_TOKEN = credentials("github-token")
-        REPO_BRANCH = "https://api.github.com/repos/org-caternberg/dsl-params-update/branches"
+        REPO_BRANCH = "https://api.github.com/repos/cb-ci-templates/ci-poc-params-update/branches"
         //GIT_REMOTE_BRANCHES = "one, two, three" // For testing purpose
     }
     stages {
