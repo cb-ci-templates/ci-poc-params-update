@@ -70,7 +70,7 @@ pipeline {
                             echo \$(date +\"%Y-%m-%d %H:%M:%S\")  > resources/choices.txt
                             git add resources/choices.txt
                             git commit -m \"update value\"
-                            git push
+                            git push origin main
                          """
                     }
                 }
