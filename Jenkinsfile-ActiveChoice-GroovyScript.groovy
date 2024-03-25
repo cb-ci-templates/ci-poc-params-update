@@ -58,8 +58,12 @@ pipeline {
             }
         }
         stage('UpdateParamsInRepo') {
+            options {
+                skipDefaultCheckout()
+            }
             steps {
                 container("git") {
+                    git branch: 'main', changelog: false, credentialsId: 'github-user-ssh', poll: false, url: 'git@github.com:cb-ci-templates/ci-poc-params-update.git'
                     withCredentials([sshUserPrivateKey(credentialsId: 'github-user-ssh', keyFileVariable: 'CERT', usernameVariable: 'SSH_USER')]) {
                         sh """
                             mkdir -p ~/.ssh && chmod 700 ~/.ssh &&  cp -prf $CERT ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
