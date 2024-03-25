@@ -44,7 +44,7 @@ pipeline {
                     tty: true
                     workingDir: "/home/jenkins/agent"
                     securityContext:
-                      runAsUser: 1000               
+                      runAsUser: 0               
                 '''
             defaultContainer 'shell'
         }
