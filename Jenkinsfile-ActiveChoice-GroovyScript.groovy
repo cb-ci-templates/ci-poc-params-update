@@ -7,14 +7,15 @@ properties([parameters(
                         fallbackScript: [classpath: [],
                                          oldScript: '',
                                          sandbox  : false, script: 'return  false'],
-                        script: [classpath: [],
-                                 oldScript: '',
-                                 sandbox  : false, script: '''
-def CREDENTIAL_ID = "gh-token-ci-templates-repo-classic"
-def SECRET = com.cloudbees.plugins.credentials.SystemCredentialsProvider.getInstance().getStore().getCredentials(com.cloudbees.plugins.credentials.domains.Domain.global()).find { it.getId().equals(CREDENTIAL_ID) }.getSecret().getPlainText()
-def URL = "https://" + SECRET + "@github.com/cb-ci-templates/ci-poc-params-update.git"
-def result = ["/bin/bash", "-c", "git ls-remote -h " + URL + " | sed 's/.*refs\\\\/heads\\\\/\\\\(.*\\\\)/\\\\1/'"].execute().text.tokenize();
-return result                                       ''']
+                                script: [classpath: [],
+                                         oldScript: '',
+                                         sandbox  : false, script: '''
+                                                    def CREDENTIAL_ID = "gh-token-ci-templates-repo-classic"
+                                                    def SECRET = com.cloudbees.plugins.credentials.SystemCredentialsProvider.getInstance().getStore().getCredentials(com.cloudbees.plugins.credentials.domains.Domain.global()).find { it.getId().equals(CREDENTIAL_ID) }.getSecret().getPlainText()
+                                                    def URL = "https://" + SECRET + "@github.com/cb-ci-templates/ci-poc-params-update.git"
+                                                    def result = ["/bin/bash", "-c", "git ls-remote -h " + URL + " | sed 's/.*refs\\\\/heads\\\\/\\\\(.*\\\\)/\\\\1/'"].execute().text.tokenize();
+                                                    return result                                       
+                                    ''']
                                 )
                     )
         ]
