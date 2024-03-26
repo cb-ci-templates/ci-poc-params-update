@@ -29,13 +29,20 @@ two main use cases of dynamic parameter values will be reflected here
 | Pipeline                                        | Approach                                                              | Pro                                                                        | Con                                                        |
 |-------------------------------------------------|-----------------------------------------------------------------------|----------------------------------------------------------------------------|------------------------------------------------------------|
 | Jenkinsfile-ActiveChoice-GroovyScript.groovy    | Groovy script hook in a Pre-render phase                              | AC Plugin built in feature, zero controller executors,no Init Job required | Active Choice Plugin required.script approvals required    |
-| Jenkinsfile-updateParameters-CasC.groovy        | Init Pipeline, using Configuration as Code to update parameter values | no script approvals required, zero controller executors                    | CasC Plugin required, Init Job required                    |
+| Jenkinsfile-updateParameters-CasC.groovy        | Init Pipeline, using Configuration as Code to update parameter values | CloudBees only, no script approvals required, zero controller executors    | CasC Plugin required, Init Job required                    |
 | Jenkinsfile-updateParameters-DSL.groovy         | Init Pipeline, using JobDsl to update parameter values                | zero controller executors                                                  | JobDasl plugin required,script approvals required          |
 | Jenkinsfile-updateParameters-Groovy.groovy      | Init Pipeline, using Groovy                                           | zero controller executors  No additional Plugin required                   | script approvals required, can lead to complex Groovy code |
 
+The diagram below shows how the four Jenkinsfiles in this repository are related and what the workflow is.
+* Just the `Jenkinsfile-ActiveChoice-GroovyScript.groovy Pipeline updates it own parameters
+* The other 3 Pipeline can be seen as init Pipeline that are running before the actuall parametrized Job just to get the branchnames from git and to update the parametrized `example-pipeline`. 
+* The `example-pipeline` will be created either by the `Jenkinsfile-updateParameters-CasC.groovy`Pipeline or by the `Jenkinsfile-updateParameters-DSL.groovy`
+  ![Parameters](images/Parameters.svg)
 
-![Parameters](images/Parameters.svg)
+# Conclusion/Recommendation
 
+* For a single Pipeline that requires dynamic parameters the Active Choice with Groovy Hooks is seen as the best approach, however, it could require a lot of script aprovals
+* When more dynamic parametrized Pipelines need to be managed, CasC or JobDSL seems to be a more efficient approach (casC should be preferred in that case!)
 
 # Notes Active Choice dynamic options
 
