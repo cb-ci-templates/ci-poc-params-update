@@ -34,6 +34,8 @@ two main use cases of dynamic parameter values will be reflected here
 | Jenkinsfile-updateParameters-Groovy.groovy      | Init Pipeline, using Groovy                                           | zero controller executors  No additional Plugin required                   | script approvals required, can lead to complex Groovy code |
 
 
+![Parameters](images/Parameters.svg)
+
 
 # Notes Active Choice dynamic options
 
