@@ -26,12 +26,12 @@ two main use cases of dynamic parameter values will be reflected here
 * All test pipelines below will scan this Git repo for its branches to display them as generic values in a choice parameter list
 * Whenever a branch is added or deleted, the updated branch list will appear as a drop down parameter list
 
-| Pipeline                                        | Approach                                                              | Pro                                                                        | Con                                                        |
-|-------------------------------------------------|-----------------------------------------------------------------------|----------------------------------------------------------------------------|------------------------------------------------------------|
-| Jenkinsfile-ActiveChoice-GroovyScript.groovy    | Groovy script hook in a Pre-render phase                              | AC Plugin built in feature, zero controller executors,no Init Job required | Active Choice Plugin required.script approvals required    |
-| Jenkinsfile-updateParameters-CasC.groovy        | Init Pipeline, using Configuration as Code to update parameter values | CloudBees only, no script approvals required, zero controller executors    | CasC Plugin required, Init Job required                    |
-| Jenkinsfile-updateParameters-DSL.groovy         | Init Pipeline, using JobDsl to update parameter values                | zero controller executors                                                  | JobDasl plugin required,script approvals required          |
-| Jenkinsfile-updateParameters-Groovy.groovy      | Init Pipeline, using Groovy                                           | zero controller executors  No additional Plugin required                   | script approvals required, can lead to complex Groovy code |
+| Pipeline                                        | Approach                                                              | Pro                                                                                                                             | Con                                                        |
+|-------------------------------------------------|-----------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------|
+| Jenkinsfile-ActiveChoice-GroovyScript.groovy    | Groovy script hook in a Pre-render phase                              | AC Plugin built in feature, zero controller executors,no Init Job required                                                      | Active Choice Plugin required.script approvals required    |
+| Jenkinsfile-updateParameters-CasC.groovy        | Init Pipeline, using Configuration as Code to update parameter values | CloudBees only, no script approvals required, zero controller executors, Can update many Jobs, Can update on remote Controllers | CasC Plugin required, Init Job required                    |
+| Jenkinsfile-updateParameters-DSL.groovy         | Init Pipeline, using JobDsl to update parameter values                | Zero controller executors                                                                                                       | JobDasl plugin required,script approvals required          |
+| Jenkinsfile-updateParameters-Groovy.groovy      | Init Pipeline, using Groovy                                           | Zero controller executors  No additional Plugin required                                                                        | script approvals required, can lead to complex Groovy code |
 
 The diagram below shows how the four Jenkinsfiles in this repository are related and what the workflow is.
 * Just the `Jenkinsfile-ActiveChoice-GroovyScript.groovy Pipeline updates it own parameters
@@ -46,8 +46,10 @@ The diagram below shows how the four Jenkinsfiles in this repository are related
 
 # Notes Active Choice dynamic options
 
-We are using the `script` in the example to get GitBranches as options
-https://plugins.jenkins.io/uno-choice/#plugin-content-the-script
+We are using the [script](https://plugins.jenkins.io/uno-choice/#plugin-content-the-script) in the example to get GitBranches as options
+* CREDENTIAL_ID: GtHub access token, configured in Jenkins credentials store with id "gh-token-ci-templates-repo-classic" as secret text
+* URL: The Git repo http url. This is the repo we want to scan the branches
+* Note: Secrets are retrieved here in this example from the Global credentials store, folder level credentials look a bit different
 
 ```
 def CREDENTIAL_ID = "gh-token-ci-templates-repo-classic"
@@ -57,8 +59,30 @@ def result = ["/bin/bash", "-c", "git ls-remote -h " + URL + " | sed 's/.*refs\/
 return result   
 ```
 
-CREDENTIAL_ID: GtHub access token, configured in Jenkins credentials store with id "gh-token-ci-templates-repo-classic" as secret text
-URL: The Git repo http url. This is the repo we want to scan the branches
+To retrieve param data from the archiveArtifact step of another Job you can use the following approach:
+* CREDENTIAL_ID: jenkins-token, configured in Jenkins credentials store with id "jenkins-token" as secret text. Format of the secret-text: user:jenkinstoken
+* URL: The Git repo http url. This is the repo we want to scan the branches
+* Note: Secrets are retrieved here in this example from the Global credentials store, folder level credentials look a bit different 
+
+Inint job that uses the ``archiveArtifact`Step to create som aram data:
+
+```
+...
+ sh 'echo "one\ntwo\nthree\n" > newparams.txt'
+ sh "cat newparams.txt"
+ archiveArtifacts artifacts: 'newparams.txt', fingerprint: true, followSymlinks: false
+ ...
+```
+
+ActiveChoice Groovy script to retrieve data from the last `lastSuccessfulBuild/artifact/` URL:
+
+```
+ def CREDENTIAL_ID = "jenkins-token"
+ def SECRET = com.cloudbees.plugins.credentials.SystemCredentialsProvider.getInstance().getStore().getCredentials(com.cloudbees.plugins.credentials.domains.Domain.global()).find { it.getId().equals(CREDENTIAL_ID) }.getSecret().getPlainText()
+ def URL = "https://"+ SECRET + "@example.com/sb/job/ci-templates-demo/job/DEMO-ParameterUsage/job/initData/lastSuccessfulBuild/artifact/newparams.txt"
+ def result = ["/bin/bash", "-c", "curl -L " + URL].execute().text.tokenize();
+ return result
+```
 
 # Extended Choice Parameter Plugin
 
