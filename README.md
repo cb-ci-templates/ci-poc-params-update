@@ -75,6 +75,7 @@ Init job that uses the `archiveArtifact` Step to create some aram data:
 ```
 
 ActiveChoice Groovy script to retrieve data from the last `lastSuccessfulBuild/artifact/` URL:
+Note: You need to adjust the URL below to your needs `example.com/sb/job/ci-templates-demo/job/DEMO-ParameterUsage/job/initData/lastSuccessfulBuild/artifact/newparams.txt`
 
 ```
  def CREDENTIAL_ID = "jenkins-token"
