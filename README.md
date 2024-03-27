@@ -75,8 +75,8 @@ Init job that uses the `archiveArtifact` Step to create some aram data:
  ...
 ```
 
-ActiveChoice Groovy script to retrieve data from the last `lastSuccessfulBuild/artifact/` URL:
-Note: You need to adjust the URL below to your needs `example.com/sb/job/ci-templates-demo/job/DEMO-ParameterUsage/job/initData/lastSuccessfulBuild/artifact/newparams.txt`
+* ActiveChoice Groovy script to retrieve data from the last `lastSuccessfulBuild/artifact/` URL
+* Note: You need to adjust the URL below to your needs `example.com/sb/job/ci-templates-demo/job/DEMO-ParameterUsage/job/initData/lastSuccessfulBuild/artifact/newparams.txt`
 
 ```
  def CREDENTIAL_ID = "jenkins-token"
@@ -87,8 +87,8 @@ Note: You need to adjust the URL below to your needs `example.com/sb/job/ci-temp
 ```
 
 
-To download from GitHib  raw URL will NOT work because GitHib has a cache that expires just every 5 min.
-There is no way to bypass the cache, so DON`T try the following:
+* To download from GitHib  raw URL will NOT work because GitHib has a cache that expires just every 5 min.
+* There is no way to bypass the cache, so DON`T try the following:
 
 ```
 def content=new URL ("https://raw.githubusercontent.com/cb-ci-templates/ci-poc-params-update/main/resources/choices.txt").getText()
