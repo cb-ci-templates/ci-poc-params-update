@@ -1,3 +1,4 @@
+package examples
 // Uses Declarative syntax to run commands inside a container.
 pipeline {
     agent {
@@ -20,7 +21,7 @@ spec:
     stages {
         stage('Main') {
             steps {
-                echo "This job create some sample values as input for the Jenkinsfile-ActiveChoice-readParamsFromOtherArchiveArtifatc Job"
+                echo "This job create some sample values as input for the examples.Jenkinsfile-ActiveChoice-readParamsFromOtherArchiveArtifatc Job"
                 sh 'echo "one\ntwo\nthree\n" > newparams.txt'
                 sh "cat newparams.txt"
                 archiveArtifacts artifacts: 'newparams.txt', fingerprint: true, followSymlinks: false

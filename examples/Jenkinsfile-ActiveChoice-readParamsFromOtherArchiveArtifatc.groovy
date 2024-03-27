@@ -1,3 +1,5 @@
+package examples
+
 properties([parameters(
         [activeChoice(choiceType: 'PT_SINGLE_SELECT',
                 filterLength: 1, filterable: false,
