@@ -60,11 +60,11 @@ return result
 ```
 
 To retrieve param data from the archiveArtifact step of another Job you can use the following approach:
-* CREDENTIAL_ID: jenkins-token, configured in Jenkins credentials store with id "jenkins-token" as secret text. Format of the secret-text: user:jenkinstoken
+* CREDENTIAL_ID: jenkins-token, configured in Jenkins credentials store with id "jenkins-token" as secret text. Format of the secret-text: `user:jenkinstoken`
 * URL: The Git repo http url. This is the repo we want to scan the branches
 * Note: Secrets are retrieved here in this example from the Global credentials store, folder level credentials look a bit different 
 
-Inint job that uses the ``archiveArtifact`Step to create som aram data:
+Init job that uses the `archiveArtifact` Step to create some aram data:
 
 ```
 ...
@@ -82,6 +82,19 @@ ActiveChoice Groovy script to retrieve data from the last `lastSuccessfulBuild/a
  def URL = "https://"+ SECRET + "@example.com/sb/job/ci-templates-demo/job/DEMO-ParameterUsage/job/initData/lastSuccessfulBuild/artifact/newparams.txt"
  def result = ["/bin/bash", "-c", "curl -L " + URL].execute().text.tokenize();
  return result
+```
+
+
+To download from GitHib  raw URL will NOT work because GitHib has a cache that expires just every 5 min.
+There is no way to bypass the cache, so DON`T try the following:
+
+```
+def content=new URL ("https://raw.githubusercontent.com/cb-ci-templates/ci-poc-params-update/main/resources/choices.txt").getText()
+def values = []
+for(def line : content.split(',')) {
+    values.add(line.trim())
+}
+return values
 ```
 
 # Extended Choice Parameter Plugin
