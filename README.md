@@ -65,13 +65,16 @@ To retrieve param data from the archiveArtifact step of another Job you can use 
 * URL: The Git repo http url. This is the repo we want to scan the branches
 * Note: Secrets are retrieved here in this example from the Global credentials store, folder level credentials look a bit different 
 
-Init job that uses the `archiveArtifact` Step to create some aram data:
+Init job that uses the `archiveArtifact` Step to create some parameter data:
 
 ```
 ...
- sh 'echo "one\ntwo\nthree\n" > newparams.txt'
- sh "cat newparams.txt"
- archiveArtifacts artifacts: 'newparams.txt', fingerprint: true, followSymlinks: false
+  steps {
+      sh 'echo "one\ntwo\nthree\n" > newparams.txt'
+      sh "cat newparams.txt"
+      archiveArtifacts artifacts: 'newparams.txt', fingerprint: true, followSymlinks: false
+  }
+}
  ...
 ```
 
