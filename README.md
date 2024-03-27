@@ -101,12 +101,11 @@ return values
 
 # Extended Choice Parameter Plugin
 
-* (Extended Choice Parameter Plugin)[https://plugins.jenkins.io/extended-choice-parameter/]
-* Extended Choice Parameter Plugin is END OF LIFE, don`t use it anymore!!!
-  Given the age of this plugin and the number of security issues with the code base, no further development is expected. There are many excellent alternatives that may suit your purpose.
+* [Extended Choice Parameter Plugin](https://plugins.jenkins.io/extended-choice-parameter/) is END OF LIFE, don`t use it anymore!!!
+* Given the age of this plugin and the number of security issues with the code base, no further development is expected. There are many excellent alternatives that may suit your purpose.
 * ALTERNATIVES
   There are other parameter plugins to use for user inputs.
-* [Active Choices](ttps://plugins.jenkins.io/uno-choice)
+* [Active Choices](https://plugins.jenkins.io/uno-choice)
 * [Json Editor Parameter](https://plugins.jenkins.io/json-editor-parameter/)
 
 # Groovy Stuff and some useful links and notes
