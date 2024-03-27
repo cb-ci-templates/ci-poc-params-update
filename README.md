@@ -65,8 +65,11 @@ To retrieve param data from the archiveArtifact step of another Job you can use 
 * URL: The Git repo http url. This is the repo we want to scan the branches
 * Note: Secrets are retrieved here in this example from the Global credentials store, folder level credentials look a bit different 
 
-Init job that uses the `archiveArtifact` Step to create some parameter data:
+Init job that uses the `archiveArtifact` Step to create some parameter data
+The file can later be referenced in the ActiveChoice as: 
+> https://<JENKINS_URL>/<PATH_TO_JOB>/lastSuccessfulBuild/artifact/newparams.txt
 
+Example:
 ```
 ...
   steps {
