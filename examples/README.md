@@ -13,10 +13,10 @@
 * `Example1-Jenkinsfile-ActiveChoice-FoldlerCredentials.groovy`
   * This example references the `newparams.txt` file created by the init job `Jenkinsfile-initparamsArchiveArtifact.groovy`
   * Credentials will be retrieved from Folder credentials
-  * You need to add a jenkins-token file credential (user:token) on as FOLDER credentials
+  * You need to add a `jenkins-token` file credential (user:token) on as FOLDER credentials
   * It uses the ActiveChoice Groovy script Hook to read parameters values from  https://<CONTROLLER_URL>/<YOUR_PATH_TO_INIT_JOB>/lastSuccessfulBuild/artifact/newparams.txt/*view*/"
 * `Example2-Jenkinsfile-ActiveChoice-readParamsFromOtherArchiveArtifact.groovy`
-  * Same as Example1, but reads jenkins-token file credential from Jenkins Global system credentials store (Manage Jenkins-> credentials)
+  * Same as Example1, but reads `jenkins-token` file credential from Jenkins Global system credentials store (Manage Jenkins-> credentials)
 * in both Examples, you MUST adjust your folder path to the init job, f.e. 
   * sb/job/ci-templates-demo/job/DEMO-ParameterUsage/job/initData/lastSuccessfulBuild/artifact/newparams.txt/*view*/
   * <YOUR_PATH_TO_INIT_JOB>/lastSuccessfulBuild/artifact/newparams.txt/*view*/
