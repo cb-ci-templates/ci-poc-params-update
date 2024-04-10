@@ -6,10 +6,10 @@
     * create it on Folder level to test Example1
     * create it on System level to test Example2
 * Jenkinsfile-initparamsArchiveArtifact.groovy
- * This Job creates parameters in a file `newparams.txt`
- * Each param value is a new line
- * The param file is archived using the `archiveArtifact`step
- * It can be referenced by https://user:token@<CONTROLLER_URL>/<PATH_TO_INIT_JOB>/lastSuccessfulBuild/artifact/newparams.txt/*view*/"
+  * This Job creates parameters in a file `newparams.txt`
+  * Each param value is a new line
+  * The param file is archived using the `archiveArtifact`step
+  * It can be referenced by https://user:token@<CONTROLLER_URL>/<PATH_TO_INIT_JOB>/lastSuccessfulBuild/artifact/newparams.txt/*view*/"
 * `Example1-Jenkinsfile-ActiveChoice-FoldlerCredentials.groovy`
   * This example references the `newparams.txt` file created by the init job `Jenkinsfile-initparamsArchiveArtifact.groovy`
   * Credentials will be retrieved from Folder credentials
