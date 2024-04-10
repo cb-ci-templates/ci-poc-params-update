@@ -18,7 +18,7 @@ properties([parameters(
                                         AbstractFolder myFolder = Jenkins.instance.getAllItems(AbstractFolder.class).find{ (it.name == folderName) }
                                         def creds = CredentialsProvider.lookupCredentials(Credentials.class, myFolder)
                                         def cred=creds.find{(it.id == credentialsID)}
-                                        def url = "https://"+ cred.getSecret().getPlainText() + "@@XXX.com/sb/job/ci-templates-demo/job/DEMO-ParameterUsage/job/initData/lastSuccessfulBuild/artifact/newparams.txt/*view*/"
+                                        def url = "https://"+ cred.getSecret().getPlainText() + "@example.com/sb/job/ci-templates-demo/job/DEMO-ParameterUsage/job/initData/lastSuccessfulBuild/artifact/newparams.txt/*view*/"
                                         def result = ["/bin/bash", "-c", "curl -L " + url].execute().text.tokenize();
                                         return result
                                     ''']
