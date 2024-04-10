@@ -1,5 +1,3 @@
-package examples
-
 properties([parameters(
         [activeChoice(choiceType: 'PT_SINGLE_SELECT',
                 filterLength: 1, filterable: false,
@@ -8,15 +6,23 @@ properties([parameters(
                 script: groovyScript(
                         fallbackScript: [classpath: [],
                                          oldScript: '',
-                                         sandbox  : false, script: 'return  false'],
+                                         sandbox  : false, script: 'return "false"'],
                         script: [classpath: [],
                                  oldScript: '',
                                  sandbox  : false, script: '''
-                                             def CREDENTIAL_ID = "jenkins-token"
-                                             def SECRET = com.cloudbees.plugins.credentials.SystemCredentialsProvider.getInstance().getStore().getCredentials(com.cloudbees.plugins.credentials.domains.Domain.global()).find { it.getId().equals(CREDENTIAL_ID) }.getSecret().getPlainText()
-                                             def url = "https://"+ SECRET + "@sda.acaternberg.flow-training.beescloud.com/sb/job/ci-templates-demo/job/DEMO-ParameterUsage/job/initData/lastSuccessfulBuild/artifact/newparams.txt/*view*/"
-                                             def result = ["/bin/bash", "-c", "curl -L " + url].execute().text.tokenize();
-                                             return result
+import jenkins.model.*
+import com.cloudbees.hudson.plugins.folder.*
+import com.cloudbees.plugins.credentials.*
+def folderName = 'ci-templates-demo'
+def credentialsID = "jenkins-token"
+AbstractFolder myFolder = Jenkins.instance.getAllItems(AbstractFolder.class).find{ (it.name == folderName) }
+//return myFolder.name.tokenize()
+def creds = CredentialsProvider.lookupCredentials(Credentials.class, myFolder)
+def cred=creds.find{(it.id == credentialsID)}
+//return cred.getSecret().getPlainText().tokenize()
+def url = "https://"+ cred.getSecret().getPlainText() + "@sda.acaternberg.flow-training.beescloud.com/sb/job/ci-templates-demo/job/DEMO-ParameterUsage/job/initData/lastSuccessfulBuild/artifact/newparams.txt/*view*/"
+def result = ["/bin/bash", "-c", "curl -L " + url].execute().text.tokenize();
+return result
                                     ''']
                 )
         )
