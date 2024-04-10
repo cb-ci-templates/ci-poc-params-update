@@ -17,8 +17,9 @@ properties([parameters(
                                         def credentialsID = "jenkins-token"
                                         AbstractFolder myFolder = Jenkins.instance.getAllItems(AbstractFolder.class).find{ (it.name == folderName) }
                                         def creds = CredentialsProvider.lookupCredentials(Credentials.class, myFolder)
-                                        def cred=creds.find{(it.id == credentialsID)}
-                                        def url = "https://"+ cred.getSecret().getPlainText() + "@example.com/sb/job/ci-templates-demo/job/DEMO-ParameterUsage/job/initData/lastSuccessfulBuild/artifact/newparams.txt/*view*/"
+                                        def cred=creds.find{(it.id == credentialsID)}.getSecret().getPlainText()
+                                        def hostUrl= Jenkins.getInstance().getRootUrl().replace("https://","https://"+ cred + "@")
+                                        def url = hostUrl + "job/ci-templates-demo/job/DEMO-ParameterUsage/job/initData/lastSuccessfulBuild/artifact/newparams.txt/*view*/"
                                         def result = ["/bin/bash", "-c", "curl -L " + url].execute().text.tokenize();
                                         return result
                                     ''']

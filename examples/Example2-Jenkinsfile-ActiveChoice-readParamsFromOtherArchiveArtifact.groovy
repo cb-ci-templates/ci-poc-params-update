@@ -12,9 +12,13 @@ properties([parameters(
                         script: [classpath: [],
                                  oldScript: '',
                                  sandbox  : false, script: '''
+                                             import jenkins.model.*
+                                             import com.cloudbees.plugins.credentials.domains.Domain
+                                             import com.cloudbees.plugins.credentials.SystemCredentialsProvider
                                              def CREDENTIAL_ID = "jenkins-token"
-                                             def SECRET = com.cloudbees.plugins.credentials.SystemCredentialsProvider.getInstance().getStore().getCredentials(com.cloudbees.plugins.credentials.domains.Domain.global()).find { it.getId().equals(CREDENTIAL_ID) }.getSecret().getPlainText()
-                                             def url = "https://"+ SECRET + "@example.com/sb/job/ci-templates-demo/job/DEMO-ParameterUsage/job/initData/lastSuccessfulBuild/artifact/newparams.txt/*view*/"
+                                             def cred = SystemCredentialsProvider.getInstance().getStore().getCredentials(Domain.global()).find { it.getId().equals(CREDENTIAL_ID) }.getSecret().getPlainText()
+                                             def hostUrl = Jenkins.getInstance().getRootUrl().replace("https://","https://"+ cred + "@")
+                                             def url = hostUrl + "job/ci-templates-demo/job/DEMO-ParameterUsage/job/initData/lastSuccessfulBuild/artifact/newparams.txt/*view*/"
                                              def result = ["/bin/bash", "-c", "curl -L " + url].execute().text.tokenize();
                                              return result
                                     ''']
