@@ -18,6 +18,6 @@
 * `Example2-Jenkinsfile-ActiveChoice-readParamsFromOtherArchiveArtifact.groovy`
   * Same as Example1, but reads jenkins-token file credential from Jenkins Global system credentials store (Manage Jenkins-> credentials)
 * in both Examples, you MUST adjust your folder name, controller url and path to the init job, f.e. 
-  *  https://"+ cred.getSecret().getPlainText() + "@sda.acaternberg.flow-training.beescloud.com/sb/job/ci-templates-demo/job/DEMO-ParameterUsage/job/initData/lastSuccessfulBuild/artifact/newparams.txt/*view*/
+  *  https://"+ cred.getSecret().getPlainText() + "@XXX.com/sb/job/ci-templates-demo/job/DEMO-ParameterUsage/job/initData/lastSuccessfulBuild/artifact/newparams.txt/*view*/
   *  https://"+ cred.getSecret().getPlainText() + "@<YOUR_CONTROLLER_URL>/<YOUR_PATH_TO_INIT_JOB>/lastSuccessfulBuild/artifact/newparams.txt/*view*/
 
