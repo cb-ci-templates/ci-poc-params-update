@@ -36,14 +36,14 @@ Other integrations are also possible, f.e referencing Nexus, gcp-buckets, s3 buc
 
 The diagram below shows how the four Jenkinsfiles in this repository are related and what the workflow is.
 * Just the `Jenkinsfile-ActiveChoice-GroovyScript.groovy Pipeline updates it own parameters
-* The other 3 Pipeline can be seen as init Pipeline that are running before the actuall parametrized Job just to get the branchnames from git and to update the parametrized `example-pipeline`. 
+* The other 3 Pipeline can be seen as init Pipeline that are running before the actual parametrized Job just to get the branch names from git and to update the parametrized `example-pipeline`. 
 * The `example-pipeline` will be created either by the `Jenkinsfile-updateParameters-CasC.groovy`Pipeline or by the `Jenkinsfile-updateParameters-DSL.groovy`
   ![Parameters](images/Parameters.svg)
 
 # Conclusion/Recommendation
 
 * For a single Pipeline that requires dynamic parameters the Active Choice with Groovy Hooks is seen as the best approach, however, it could require a lot of script aprovals
-* When more dynamic parametrized Pipelines need to be managed, CasC or JobDSL seems to be a more efficient approach (casC should be preferred in that case!)
+* When more dynamic parametrized Pipelines need to be managed, CasC or JobDSL seems to be a more efficient approach (CasC should be preferred in that case!)
 
 # Notes Active Choice dynamic options
 
