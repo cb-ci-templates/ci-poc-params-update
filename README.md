@@ -168,3 +168,50 @@ see  https://stackoverflow.com/questions/35205665/jenkins-credentials-store-acce
   def jsonSlurper = new groovy.json.JsonSlurper()
   println jsonSlurper.parseText(jsonText)
 ```
+
+
+To use **`JsonSlurper`** and **`SnakeYAML`** in Jenkins pipelines, the requirements differ slightly:
+
+---
+
+### ✅ **1. JsonSlurper**
+
+**✅ No plugin required**
+`JsonSlurper` is a **built-in Groovy class**, so it's available in Jenkins Pipeline out of the box.
+
+You can use it in both `script {}` and `@NonCPS` contexts like this:
+
+```groovy
+def json = new groovy.json.JsonSlurper().parseText('{"key":"value"}')
+```
+
+---
+
+### ✅ **2. SnakeYAML**
+
+**🔧 Required Plugin:**
+
+* **[Pipeline: Groovy (workflow-cps)](https://plugins.jenkins.io/workflow-cps/)** (for using `@NonCPS`)
+* **[SnakeYAML API Plugin](https://plugins.jenkins.io/snakeyaml-api/)** (provides the `org.yaml.snakeyaml.Yaml` class)
+
+🟡 Optional but commonly included:
+
+* **Pipeline Utility Steps Plugin** – sometimes used for simplified YAML loading (e.g. `readYaml()`), though it uses its own YAML parser internally.
+
+**Usage example:**
+
+```groovy
+@NonCPS
+def parseYaml(text) {
+    new org.yaml.snakeyaml.Yaml().load(text)
+}
+```
+
+---
+
+### 🛠️ Additional Recommendations
+
+* Make sure `scriptApproval.xml` allows the use of these classes or mark them as safe if required.
+* If you're using `sandbox=true`, Jenkins may block some reflective calls unless approved manually.
+
+
