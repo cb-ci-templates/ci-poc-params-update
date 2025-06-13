@@ -129,7 +129,7 @@ steps {
 
 ## 🔬 Useful Groovy Snippets
 
-### Fetch Git Branches
+## Fetch Git Branches
 
 One liner to get a private key credential:
 See [ssh credentials implementations](https://javadoc.jenkins.io/plugin/ssh-credentials/com/cloudbees/jenkins/plugins/sshcredentials/impl/) for methods to extract values
