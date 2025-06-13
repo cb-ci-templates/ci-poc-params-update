@@ -37,34 +37,20 @@ This repository addresses two core use cases:
 
 All pipeline examples scan this Git repository for branches and present them as dropdown parameter values.
 
-| Pipeline File                                  | Approach                              | Pros                                                                                      | Cons                                              |
-| ---------------------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------- |
-| `Jenkinsfile-ActiveChoice-GroovyScript.groovy` | Groovy in UI pre-render phase         | Built-in feature of Active Choice plugin, no need for init job, zero controller executors | Requires plugin and script approvals              |
-| `Jenkinsfile-updateParameters-CasC.groovy`     | Config-as-Code (CasC) + Init Pipeline | CloudBees native, no script approval needed, scalable across jobs/controllers             | CloudBees only, CasC plugin required              |
-| `Jenkinsfile-updateParameters-DSL.groovy`      | Job DSL + Init Pipeline               | Zero controller executors                                                                 | DSL plugin needed, script approval required       |
-| `Jenkinsfile-updateParameters-Groovy.groovy`   | Plain Groovy in Init Pipeline         | No plugin dependency, zero controller executors                                           | Requires script approval, complexity grows easily |
+| Pipeline File                                                                                 | Approach                              | Pros                                                                                      | Cons                                              |
+|-----------------------------------------------------------------------------------------------| ------------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------- |
+| [Jenkinsfile-ActiveChoice-GroovyScript.groovy](Jenkinsfile-ActiveChoice-GroovyScript.groovy)  | Groovy in UI pre-render phase         | Built-in feature of Active Choice plugin, no need for init job, zero controller executors | Requires plugin and script approvals              |
+| [Jenkinsfile-updateParameters-CasC.groovy](Jenkinsfile-updateParameters-CasC.groovy)          | Config-as-Code (CasC) + Init Pipeline | CloudBees native, no script approval needed, scalable across jobs/controllers             | CloudBees only, CasC plugin required              |
+| [Jenkinsfile-updateParameters-DSL.groovy](Jenkinsfile-updateParameters-DSL.groovy)            | Job DSL + Init Pipeline               | Zero controller executors                                                                 | DSL plugin needed, script approval required       |
+| [jobdsl_updateJobParams.groovy](jobdsl_updateJobParams.groovy)                                | Plain Groovy in Init Pipeline         | No plugin dependency, zero controller executors                                           | Requires script approval, complexity grows easily |
 
 ### Relationship Diagram
-
+The diagram below shows how the four Jenkinsfiles in this repository are related and what the workflow is.
 - Only `Jenkinsfile-ActiveChoice-GroovyScript.groovy` updates its own parameter list.
 - The other three act as **Init Pipelines**, updating the `example-pipeline` before user input.
-- `example-pipeline` is dynamically created and configured via either CasC or DSL.
-  =======
-* All test pipelines below will scan this Git repo for its branches to display them as generic values in a choice parameter list
-* Whenever a branch is added or deleted, the updated branch list will appear as a drop-down parameter list
->>>>>>> 33e4c4e166bbb5fe9edbd35384f0e0cd93ba0114
-
-| Pipeline                                        | Approach                                                              | Pro                                                                                                                             | Con                                                        |
-|-------------------------------------------------|-----------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------|
-| Jenkinsfile-ActiveChoice-GroovyScript.groovy    | Groovy script hook in a Pre-render phase                              | AC Plugin built in feature, zero controller executors,no Init Job required                                                      | Active Choice Plugin required.script approvals required    |
-| Jenkinsfile-updateParameters-CasC.groovy        | Init Pipeline, using Configuration as Code to update parameter values | CloudBees only, no script approvals required, zero controller executors, Can update many Jobs, Can update on remote Controllers | CasC Plugin required, Init Job required                    |
-| Jenkinsfile-updateParameters-DSL.groovy         | Init Pipeline, using JobDsl to update parameter values                | Zero controller executors                                                                                                       | JobDsl plugin required,script approvals required           |
-| Jenkinsfile-updateParameters-Groovy.groovy      | Init Pipeline, using Groovy                                           | Zero controller executors  No additional Plugin required                                                                        | script approvals required, can lead to complex Groovy code |
-
-The diagram below shows how the four Jenkinsfiles in this repository are related and what the workflow is.
-* Just the `Jenkinsfile-ActiveChoice-GroovyScript.groovy Pipeline updates it own parameters
-* The other 3 Pipeline can be seen as init Pipeline that are running before the actual parametrized Job just to get the branch names from git and to update the parametrized `example-pipeline`.
-* The `example-pipeline` will be created either by the `Jenkinsfile-updateParameters-CasC.groovy`Pipeline or by the `Jenkinsfile-updateParameters-DSL.groovy`
+- All test pipelines below will scan this Git repo for its branches to display them as generic values in a choice parameter list
+- Whenever a branch is added or deleted, the updated branch list will appear as a drop-down parameter list
+- The `example-pipeline` is dynamically created and configured via either CasC or DSL. See `Jenkinsfile-updateParameters-CasC.groovy`Pipeline or  `Jenkinsfile-updateParameters-DSL.groovy`
   ![Parameters](images/Parameters.svg)
 
 ## Recommendations
