@@ -1,53 +1,31 @@
-# Dynamic Parameters in Declarative Jenkins Pipelines
+# About
 
-## Overview
+This repository contains four approaches on how to deal with dynamic Parameter values declarative pipelines.
+Each of the approaches has pro and cons that are reflected here.
 
-This repository showcases **four distinct approaches** for implementing **dynamic parameter values** in Jenkins Declarative Pipelines. Each method is tailored for specific scenarios and environments, highlighting the trade-offs between flexibility, plugin dependencies, and security considerations.
+# Objective
 
-## Objectives
+The overall objective when using dynamic Parameter values for Pipelines is to
 
-The primary goal of dynamic parameters is to **streamline UI-driven pipeline executions** while maintaining best practices in Jenkins. These include:
+* [Set the number of executors on a Jenkins Controller always to zero](https://docs.cloudbees.com/docs/cloudbees-ci-kb/latest/best-practices/app-performance-best-practices#_built_in_node_formerly_known_as_master_node_build_executors)
+* [Do all work within an agent](https://docs.cloudbees.com/docs/cloudbees-ci/latest/pipelines/pipeline-best-practices#_do_all_the_work_within_an_agent)
+* [Reduce the amount of Groovy](https://docs.cloudbees.com/docs/cloudbees-ci/latest/pipelines/pipeline-best-practices#_reduce_the_amount_of_groovy_code_executed_by_pipelines)
+* [Avoid script approvals](https://docs.cloudbees.com/docs/cloudbees-ci/latest/pipelines/pipeline-best-practices#_avoid_script_security_exceptions)
 
-- ✅ [Set Jenkins controller executors to zero](https://docs.cloudbees.com/docs/cloudbees-ci-kb/latest/best-practices/app-performance-best-practices#_built_in_node_formerly_known_as_master_node_build_executors)
-- ✅ [Execute all pipeline work within agents](https://docs.cloudbees.com/docs/cloudbees-ci/latest/pipelines/pipeline-best-practices#_do_all_the_work_within_an_agent)
-- ✅ [Minimize Groovy execution in pipelines](https://docs.cloudbees.com/docs/cloudbees-ci/latest/pipelines/pipeline-best-practices#_reduce_the_amount_of_groovy_code_executed_by_pipelines)
-- ✅ [Avoid script approvals and security exceptions](https://docs.cloudbees.com/docs/cloudbees-ci/latest/pipelines/pipeline-best-practices#_avoid_script_security_exceptions)
+# Use case
 
-## Use Cases
+two main use cases of dynamic parameter values will be reflected here
 
-This repository addresses two core use cases:
+* Case1: A parametrized Pipeline will be started using the "Build with parameters" option in the UI. The Pipeline uses the Active Choice Parameter Plugin and its  [Groovy script](https://plugins.jenkins.io/uno-choice/#plugin-content-the-script)hook to get the dynamic values in a Pipeline pre-parameter render phase 
+* Case2: Another Pipeline runs before the actual parametrized Pipeline and updates the Parametrized Pipeline config before the button "Build with Parameters" is clicked 
 
-### 📂 Case 1: UI-based Parameter Selection
+Note: The samples in this repo are scanning a remote Git repo (this) for all branches and supply the branch list as parameter values/choices ("Build-with-parameters")
+Other integrations are also possible, f.e referencing Nexus, gcp-buckets, s3 buckets or getting values from `lastSuccessfulBuild/artifact/` data file from another Job URL (see below)
 
-- Users start the pipeline using **"Build with Parameters"**.
-- Parameters are dynamically populated using the [Active Choice Plugin](https://plugins.jenkins.io/uno-choice/) and Groovy scripts.
+# Pipelines to test
 
-### 🚧 Case 2: Pipeline-Driven Configuration
-
-- A separate **initialization pipeline** dynamically configures another pipeline's parameters **before** user interaction.
-
-## Example Integration Sources for Dynamic Values
-
-- Git repository branches (e.g., this repo)
-- Nexus, GCP Buckets, S3
-- Jenkins job artifacts (e.g., `lastSuccessfulBuild/artifact/`)
-
-## Pipeline Demonstrations
-
-All pipeline examples scan this Git repository for branches and present them as dropdown parameter values.
-
-| Pipeline File                                  | Approach                              | Pros                                                                                      | Cons                                              |
-| ---------------------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------- |
-| `Jenkinsfile-ActiveChoice-GroovyScript.groovy` | Groovy in UI pre-render phase         | Built-in feature of Active Choice plugin, no need for init job, zero controller executors | Requires plugin and script approvals              |
-| `Jenkinsfile-updateParameters-CasC.groovy`     | Config-as-Code (CasC) + Init Pipeline | CloudBees native, no script approval needed, scalable across jobs/controllers             | CloudBees only, CasC plugin required              |
-| `Jenkinsfile-updateParameters-DSL.groovy`      | Job DSL + Init Pipeline               | Zero controller executors                                                                 | DSL plugin needed, script approval required       |
-| `Jenkinsfile-updateParameters-Groovy.groovy`   | Plain Groovy in Init Pipeline         | No plugin dependency, zero controller executors                                           | Requires script approval, complexity grows easily |
-
-### Relationship Diagram
-
-- Only `Jenkinsfile-ActiveChoice-GroovyScript.groovy` updates its own parameter list.
-- The other three act as **Init Pipelines**, updating the `example-pipeline` before user input.
-- `example-pipeline` is dynamically created and configured via either CasC or DSL.
+* All test pipelines below will scan this Git repo for its branches to display them as generic values in a choice parameter list
+* Whenever a branch is added or deleted, the updated branch list will appear as a drop down parameter list
 
 | Pipeline                                        | Approach                                                              | Pro                                                                                                                             | Con                                                        |
 |-------------------------------------------------|-----------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------|
@@ -62,78 +40,85 @@ The diagram below shows how the four Jenkinsfiles in this repository are related
 * The `example-pipeline` will be created either by the `Jenkinsfile-updateParameters-CasC.groovy`Pipeline or by the `Jenkinsfile-updateParameters-DSL.groovy`
   ![Parameters](images/Parameters.svg)
 
-## Recommendations
+# Conclusion/Recommendation
 
-- 🌟 Use **Active Choice** for single pipelines where dynamic input is needed.
-- 🚀 For managing **multiple jobs at scale**, consider using **CasC** (if on CloudBees) or **Job DSL**.
-- 🚀 Consider reading parameters from property file or yaml config file (per repo branch).
+* For a single Pipeline that requires dynamic parameters the Active Choice with Groovy Hooks is seen as the best approach, however, it could require a lot of script aprovals
+* When more dynamic parametrized Pipelines need to be managed, CasC or JobDSL seems to be a more efficient approach (CasC should be preferred in that case!)
 
----
+# Notes Active Choice dynamic options
 
-## 🔍 Active Choice Plugin Examples
+We are using the [script](https://plugins.jenkins.io/uno-choice/#plugin-content-the-script) in the example to get GitBranches as options
+* CREDENTIAL_ID: GtHub access token, configured in Jenkins credentials store with id "gh-token-ci-templates-repo-classic" as secret text
+* URL: The Git repo http url. This is the repo we want to scan the branches
+* Note: Secrets are retrieved here in this example from the Global credentials store, folder level credentials look a bit different
 
-### Fetch Git Branches (Groovy Script)
-
-```groovy
+```
 def CREDENTIAL_ID = "gh-token-ci-templates-repo-classic"
-def SECRET = com.cloudbees.plugins.credentials.SystemCredentialsProvider.getInstance()
-  .getStore()
-  .getCredentials(com.cloudbees.plugins.credentials.domains.Domain.global())
-  .find { it.getId().equals(CREDENTIAL_ID) }
-  .getSecret()
-  .getPlainText()
+def SECRET = com.cloudbees.plugins.credentials.SystemCredentialsProvider.getInstance().getStore().getCredentials(com.cloudbees.plugins.credentials.domains.Domain.global()).find { it.getId().equals(CREDENTIAL_ID) }.getSecret().getPlainText()
 def URL = "https://" + SECRET + "@github.com/cb-ci-templates/ci-poc-params-update.git"
-def result = ["/bin/bash", "-c", "git ls-remote -h " + URL + " | awk '{print \$2}' | sed 's|refs/heads/||'"].execute().text.tokenize();
-return result
+def result = ["/bin/bash", "-c", "git ls-remote -h " + URL + " | sed 's/.*refs\/heads\/\(.*\)/\1/'"].execute().text.tokenize();
+return result   
 ```
 
-### Retrieve Data from Another Job’s Artifact
+To retrieve param data from the archiveArtifact step of another Job you can use the following approach:
+* CREDENTIAL_ID: jenkins-token, configured in Jenkins credentials store with id "jenkins-token" as secret text. Format of the secret-text: `user:jenkinstoken`
+* URL: The Git repo http url. This is the repo we want to scan the branches
+* Note: Secrets are retrieved here in this example from the Global credentials store, folder level credentials look a bit different 
 
-1. Init job archives a file:
+Init job that uses the `archiveArtifact` Step to create some parameter data
+The file can later be referenced in the ActiveChoice as: 
+> https://<JENKINS_URL>/<PATH_TO_JOB>/lastSuccessfulBuild/artifact/newparams.txt
 
-```groovy
-steps {
-    sh 'echo "one\ntwo\nthree\n" > newparams.txt'
-    archiveArtifacts artifacts: 'newparams.txt'
+Example:
+```
+...
+  steps {
+      sh 'echo "one\ntwo\nthree\n" > newparams.txt'
+      sh "cat newparams.txt"
+      archiveArtifacts artifacts: 'newparams.txt', fingerprint: true, followSymlinks: false
+  }
 }
+ ...
 ```
 
 * ActiveChoice Groovy script to retrieve data from the last `lastSuccessfulBuild/artifact/` URL
 * Note: You need to adjust the URL and job path below to your needs `your.controller.com/sb/job/ci-templates-demo/job/DEMO-ParameterUsage/job/initData/lastSuccessfulBuild/artifact/newparams.txt/*view*/`
 
-```groovy
-def CREDENTIAL_ID = "jenkins-token"
-def SECRET = com.cloudbees.plugins.credentials.SystemCredentialsProvider.getInstance()
-  .getStore()
-  .getCredentials(com.cloudbees.plugins.credentials.domains.Domain.global())
-  .find { it.getId().equals(CREDENTIAL_ID) }
-  .getSecret().getPlainText()
-def url = "https://${SECRET}@your.controller.com/job/example/job/init/lastSuccessfulBuild/artifact/newparams.txt/*view*/"
-def result = ["/bin/bash", "-c", "curl -L " + url].execute().text.tokenize()
-return result
+```
+ def CREDENTIAL_ID = "jenkins-token"
+ def SECRET = com.cloudbees.plugins.credentials.SystemCredentialsProvider.getInstance().getStore().getCredentials(com.cloudbees.plugins.credentials.domains.Domain.global()).find { it.getId().equals(CREDENTIAL_ID) }.getSecret().getPlainText()
+ def url = "https://"+ SECRET + "@your.controller.com/sb/job/ci-templates-demo/job/DEMO-ParameterUsage/job/initData/lastSuccessfulBuild/artifact/newparams.txt/*view*/"
+ def result = ["/bin/bash", "-c", "curl -L " + url].execute().text.tokenize();
+ return result
 ```
 
-> ⚠️ Avoid using GitHub raw links as input source. GitHub caches raw content for up to 5 minutes, which is incompatible with dynamic parameter refresh.
+* To download from GitHib  raw URL will NOT work because GitHib has a cache that expires just every 5 min.
+* There is no way to bypass the cache, so DON`T try the following:
 
----
+```
+def content=new URL("https://raw.githubusercontent.com/cb-ci-templates/ci-poc-params-update/main/resources/choices.txt").getText()
+def values = []
+for(def line : content.split(',')) {
+    values.add(line.trim())
+}
+return values
+```
 
-## ⛔ Deprecated Plugin Warning
+# Extended Choice Parameter Plugin
 
-### Extended Choice Parameter Plugin
-
-- ❌ [DO NOT USE](https://plugins.jenkins.io/extended-choice-parameter/)
-- It's EOL, unmaintained, and contains known security issues.
-
-**Use these alternatives instead:**
-
-- ✔️ [Active Choice Plugin](https://plugins.jenkins.io/uno-choice/)
-- ✔️ [JSON Editor Parameter Plugin](https://plugins.jenkins.io/json-editor-parameter/)
+* [Extended Choice Parameter Plugin](https://plugins.jenkins.io/extended-choice-parameter/) is END OF LIFE, don`t use it anymore!!!
+* Given the age of this plugin and the number of security issues with the code base, no further development is expected. There are many excellent alternatives that may suit your purpose.
+* ALTERNATIVES
+  There are other parameter plugins to use for user inputs.
+* [Active Choices](https://plugins.jenkins.io/uno-choice)
+* [Json Editor Parameter](https://plugins.jenkins.io/json-editor-parameter/)
 
 ---
 
 ## 🔬 Useful Groovy Snippets
 
 ### Fetch Git Branches
+* https://gist.github.com/jseed/ac0218e86c88751942c847b10637bb56
 
 One liner to get a private key credential:
 See [ssh credentials implementations](https://javadoc.jenkins.io/plugin/ssh-credentials/com/cloudbees/jenkins/plugins/sshcredentials/impl/) for methods to extract values
