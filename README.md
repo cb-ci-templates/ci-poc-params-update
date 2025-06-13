@@ -147,3 +147,19 @@ def SECRET = com.cloudbees.plugins.credentials.SystemCredentialsProvider.getInst
 ```
 
 see  https://stackoverflow.com/questions/35205665/jenkins-credentials-store-access-via-groovy
+
+## Json Slurper/SnakeYaml
+
+```
+def yamlText = """
+project:
+  name: hello-world
+  version: 1.0
+"""    
+def yaml = new org.yaml.snakeyaml.Yaml()
+println yaml.load(yamlText)
+
+def jsonText = '{"app": {"name": "test-app", "env": "prod"}}'
+def jsonSlurper = new groovy.json.JsonSlurper()
+println jsonSlurper.parseText(jsonText)
+```
