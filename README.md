@@ -15,22 +15,14 @@ The primary goal of dynamic parameters is to **streamline UI-driven pipeline exe
 
 ## Use Cases
 
-<<<<<<< HEAD
+
 This repository addresses two core use cases:
 
 ### 📂 Case 1: UI-based Parameter Selection
-=======
-* Case1: A parametrized Pipeline will be started using the "Build with parameters" option in the UI. The Pipeline uses the Active Choice Parameter Plugin and its  [Groovy script](https://plugins.jenkins.io/uno-choice/#plugin-content-the-script) hook to get the dynamic values in a Pipeline pre-parameter render phase
-* Case2: Another Pipeline runs before the actual parametrized Pipeline and updates the Parametrized Pipeline config before the button "Build with Parameters" is clicked
-
-Note: The samples in this repo are scanning a remote Git repo (this) for all branches and supply the branch list as parameter values/choices ("Build-with-parameters")
-Other integrations are also possible, f.e referencing Nexus, gcp-buckets, s3 buckets, or getting values from `lastSuccessfulBuild/artifact/` data file from another Job URL (see below)
->>>>>>> 33e4c4e166bbb5fe9edbd35384f0e0cd93ba0114
 
 - Users start the pipeline using **"Build with Parameters"**.
 - Parameters are dynamically populated using the [Active Choice Plugin](https://plugins.jenkins.io/uno-choice/) and Groovy scripts.
 
-<<<<<<< HEAD
 ### 🚧 Case 2: Pipeline-Driven Configuration
 
 - A separate **initialization pipeline** dynamically configures another pipeline's parameters **before** user interaction.
