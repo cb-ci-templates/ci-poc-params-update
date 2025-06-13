@@ -78,9 +78,14 @@ def result = ["/bin/bash", "-c", "git ls-remote -h " + URL + " | awk '{print \$2
 return result
 ```
 
+NOTE; 
+* If you want to integrate this into your Active Choice Script, you need to change
+```awk '{print \$2}'``` to ```awk '{print \\$2}' ```.  (Two backslashes!) . See sample here [Jenkinsfile-ActiveChoice-GroovyScript.groovy](Jenkinsfile-ActiveChoice-GroovyScript.groovy)
+* If you run it from scrip console, you can copy it as it is (just one backslash ``` awk '{print \$2}'  ```)
+
 ### Retrieve Data from Another Job’s Artifact
 
-1. Init job archives a file:
+Init job archives a file (basicly the parameter list we want to reference):
 
 ```groovy
 steps {
@@ -93,15 +98,15 @@ steps {
 * Note: You need to adjust the URL and job path below to your needs `your.controller.com/sb/job/ci-templates-demo/job/DEMO-ParameterUsage/job/initData/lastSuccessfulBuild/artifact/newparams.txt/*view*/`
 
 ```groovy
-def CREDENTIAL_ID = "jenkins-token"
-def SECRET = com.cloudbees.plugins.credentials.SystemCredentialsProvider.getInstance()
-  .getStore()
-  .getCredentials(com.cloudbees.plugins.credentials.domains.Domain.global())
-  .find { it.getId().equals(CREDENTIAL_ID) }
-  .getSecret().getPlainText()
-def url = "https://${SECRET}@your.controller.com/job/example/job/init/lastSuccessfulBuild/artifact/newparams.txt/*view*/"
-def result = ["/bin/bash", "-c", "curl -L " + url].execute().text.tokenize()
-return result
+  def CREDENTIAL_ID = "jenkins-token"
+  def SECRET = com.cloudbees.plugins.credentials.SystemCredentialsProvider.getInstance()
+    .getStore()
+    .getCredentials(com.cloudbees.plugins.credentials.domains.Domain.global())
+    .find { it.getId().equals(CREDENTIAL_ID) }
+    .getSecret().getPlainText()
+  def url = "https://${SECRET}@your.controller.com/job/example/job/init/lastSuccessfulBuild/artifact/newparams.txt/*view*/"
+  def result = ["/bin/bash", "-c", "curl -L " + url].execute().text.tokenize()
+  return result
 ```
 
 > ⚠️ Avoid using GitHub raw links as input source. GitHub caches raw content for up to 5 minutes, which is incompatible with dynamic parameter refresh.
@@ -151,15 +156,15 @@ see  https://stackoverflow.com/questions/35205665/jenkins-credentials-store-acce
 ## Json Slurper/SnakeYaml
 
 ```
-def yamlText = """
-project:
-  name: hello-world
-  version: 1.0
-"""    
-def yaml = new org.yaml.snakeyaml.Yaml()
-println yaml.load(yamlText)
-
-def jsonText = '{"app": {"name": "test-app", "env": "prod"}}'
-def jsonSlurper = new groovy.json.JsonSlurper()
-println jsonSlurper.parseText(jsonText)
+  def yamlText = """
+  project:
+    name: hello-world
+    version: 1.0
+  """    
+  def yaml = new org.yaml.snakeyaml.Yaml()
+  println yaml.load(yamlText)
+  
+  def jsonText = '{"app": {"name": "test-app", "env": "prod"}}'
+  def jsonSlurper = new groovy.json.JsonSlurper()
+  println jsonSlurper.parseText(jsonText)
 ```
