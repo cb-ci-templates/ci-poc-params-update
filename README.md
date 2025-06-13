@@ -132,7 +132,7 @@ steps {
 ## Credentials
 
 One liner to get a private key credential:
-See [ssh credentials implementations](https://javadoc.jenkins.io/plugin/ssh-credentials/com/cloudbees/jenkins/plugins/sshcredentials/impl/) for methods to extract values
+See [ssh credentials implementations](nkins.io/plugin/ssh-credentials/com/cloudbees/jenkins/plugins/sshcredentials/package-summary.html) for methods to extract values
 
 ```
 def PRIVATE_KEY = com.cloudbees.plugins.credentials.SystemCredentialsProvider.getInstance().getStore().getCredentials(com.cloudbees.plugins.credentials.domains.Domain.global()).find { it.getId().equals(CREDENTIAL_ID) }.getPrivateKey()
