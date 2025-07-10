@@ -57,13 +57,19 @@ The diagram below shows how the four Jenkinsfiles in this repository are related
 
 - 🌟 Use **Active Choice** for single pipelines where dynamic input is needed.
 - 🚀 For managing **multiple jobs at scale**, consider using **CasC** (if on CloudBees) or **Job DSL**.
-- 🚀 Consider reading parameters from property file or yaml config file (per repo branch).
+- 🚀 Consider reading parameters from a property file or yaml config file (per repo branch).
 
 ---
 
 ## 🔍 Active Choice Plugin Examples
 
 ### Fetch Git Branches (Groovy Script)
+
+NOTE: 
+* To expose credentials in the URL like `https://SECRET@github.com` is NOT secure!!!
+* If you want to integrate this into your Active Choice Script, you need to change
+  ```awk '{print \$2}'``` to ```awk '{print \\$2}' ```.  (Two backslashes!) . See sample here [Jenkinsfile-ActiveChoice-GroovyScript.groovy](Jenkinsfile-ActiveChoice-GroovyScript.groovy)
+* If you run it from the script console, you can copy it as it is (just one backslash ``` awk '{print \$2}'  ```)
 
 ```groovy
 def CREDENTIAL_ID = "gh-token-ci-templates-repo-classic"
@@ -78,10 +84,26 @@ def result = ["/bin/bash", "-c", "git ls-remote -h " + URL + " | awk '{print \$2
 return result
 ```
 
-NOTE; 
-* If you want to integrate this into your Active Choice Script, you need to change
-```awk '{print \$2}'``` to ```awk '{print \\$2}' ```.  (Two backslashes!) . See sample here [Jenkinsfile-ActiveChoice-GroovyScript.groovy](Jenkinsfile-ActiveChoice-GroovyScript.groovy)
-* If you run it from scrip console, you can copy it as it is (just one backslash ``` awk '{print \$2}'  ```)
+A more secure alternative looks like this:
+
+```groovy
+def CREDENTIAL_ID = "gh-token-ci-templates-repo-classic"
+def SECRET = com.cloudbees.plugins.credentials.SystemCredentialsProvider.getInstance()
+  .getStore()
+  .getCredentials(com.cloudbees.plugins.credentials.domains.Domain.global())
+  .find { it.getId().equals(CREDENTIAL_ID) }
+  .getSecret()
+  .getPlainText()
+def url = new URL("https://api.github.com/repos/cb-ci-templates/ci-poc-params-update/branches")
+def conn = url.openConnection()
+conn.setRequestProperty("Authorization", "token " + SECRET)
+def text = conn.inputStream.text
+def branches = new groovy.json.JsonSlurper().parseText(text)*.name
+return branches
+
+```
+
+
 
 ### Retrieve Data from Another Job’s Artifact
 
@@ -95,7 +117,9 @@ steps {
 ```
 
 * ActiveChoice Groovy script to retrieve data from the last `lastSuccessfulBuild/artifact/` URL
-* Note: You need to adjust the URL and job path below to your needs `your.controller.com/sb/job/ci-templates-demo/job/DEMO-ParameterUsage/job/initData/lastSuccessfulBuild/artifact/newparams.txt/*view*/`
+* Note: 
+  * You need to adjust the URL and job path below to your needs: your.controller.com/sb/job/ci-templates-demo/job/DEMO-ParameterUsage/job/initData/lastSuccessfulBuild/artifact/newparams.txt/*view*/`
+  * To expose credentials in the URL like `https://SECRET@github.com` is NOT secure!!!
 
 ```groovy
   def CREDENTIAL_ID = "jenkins-token"
@@ -112,6 +136,7 @@ steps {
 > ⚠️ Avoid using GitHub raw links as input source. GitHub caches raw content for up to 5 minutes, which is incompatible with dynamic parameter refresh.
 
 ---
+
 
 ## ⛔ Deprecated Plugin Warning
 
